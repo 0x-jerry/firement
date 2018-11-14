@@ -24,6 +24,7 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
-    "firebase": "^5.5.8"
+    "firebase": "^5.5.8",
+    "marked": "^0.5.1"
   }
 }

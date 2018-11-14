@@ -16,7 +16,7 @@ module.exports = merge(baseConfig, {
   devtool: 'source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new CopyWebpackPlugin(['./index.html']),
+    new CopyWebpackPlugin(['./index.html', './index.css']),
     new Dotenv(),
   ],
 });

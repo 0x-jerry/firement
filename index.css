@@ -1,0 +1,46 @@
+.firement-form {
+  box-sizing: border-box;
+}
+
+.firement-form * {
+  box-sizing: border-box;
+}
+
+.firement-form {
+  border: 1px solid gray;
+  padding: 10px;
+}
+
+.firement-form .firement-column {
+  border: 1px solid saddlebrown;
+  margin: 10px auto;
+}
+
+.firement-form .firement-label {
+  border: 1px solid green;
+}
+
+.firement-form .firement-input {
+  border: 1px solid red;
+}
+
+.firement-form .firement-button {
+  border: 1px solid yellowgreen;
+}
+
+.firement-form .firement-content {
+  border: 1px solid blue;
+  width: 100%;
+  resize: none;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+.firement-form .firement-preview {
+  border: 1px solid goldenrod;
+  overflow: auto;
+  width: 100%;
+  height: 200px;
+  resize: none;
+  margin: 0 auto;
+}

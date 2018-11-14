@@ -1,9 +1,15 @@
 import firebase from 'firebase';
 import { login } from './login';
+import marked from 'marked';
 
 function init(config) {
   firebase.initializeApp(config);
 }
+
+document.getElementById('firement-content').onkeyup = (e) => {
+  const markdown = marked(e.target.value);
+  document.getElementById('firement-preview').innerHTML = markdown;
+};
 
 document.getElementById('login').onclick = () => {
   login().then((data) => {
