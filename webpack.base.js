@@ -14,10 +14,8 @@ module.exports = {
     rules: [
       {
         test: /\.[tj]s?$/,
-        include: [sPath.join(__dirname, 'src')],
-        use: {
-          loader: 'ts-loader',
-        },
+        include: [sPath.join(__dirname, 'src'), sPath.join(__dirname, 'index.ts')],
+        loader: 'ts-loader',
       },
     ],
   },

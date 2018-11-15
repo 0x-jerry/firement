@@ -1,44 +1,33 @@
 import * as firebase from 'firebase';
-import * as marked from 'marked';
-import { login, LoginTypes } from './login';
 
 function init(config) {
   firebase.initializeApp(config);
 }
 
-document.getElementById('firement-content').onkeyup = (e) => {
-  const element = e.target as HTMLInputElement;
+function uid(): string {
+  return Math.random()
+    .toString()
+    .substr(2);
+}
 
-  const markdown = marked(element.value);
-  document.getElementById('firement-preview').innerHTML = markdown;
-};
+async function getArticleComment(title: string): Promise<IComment> {
+  const data = await firebase
+    .database()
+    .ref(`/${title}`)
+    .once('value');
+  return data.val();
+}
 
-document.getElementById('login-google').onclick = () => {
-  login(LoginTypes.Google).then((data) => {
-    console.log(data);
-  });
-};
+function pushComment(title: string, user: IUser, content: string) {
+  const comment = user as IComment;
 
-document.getElementById('login-github').onclick = () => {
-  login(LoginTypes.GitHub).then((data) => {
-    console.log(data);
-  });
-};
+  comment.content = content;
+  comment.timestamp = new Date().getTime().toString();
 
-document.getElementById('commit').onsubmit = (ev) => {
-  let elements = Array.from(
-    ev.srcElement as HTMLFormElement,
-  ) as HTMLInputElement[];
+  firebase
+    .database()
+    .ref(`/${title}/${uid()}/`)
+    .set(comment);
+}
 
-  elements = elements.filter((e) => !!e.name);
-
-  const data = {};
-
-  elements.forEach((e) => (data[e.name] = e.value));
-
-  console.log(data);
-
-  ev.preventDefault();
-};
-
-export { init };
+export { init, getArticleComment, pushComment };
