@@ -1,22 +1,24 @@
 import * as firebase from 'firebase';
 
-enum LoginTypes {
+export enum LoginTypes {
   Google = 'Google',
   GitHub = 'GitHub',
 }
 
-function login(type: LoginTypes = LoginTypes.Google) {
+async function login(type: LoginTypes = LoginTypes.Google) {
+  let provider: firebase.auth.AuthProvider = null;
+
   switch (type) {
     case LoginTypes.Google:
-      return loginWithGoogle();
-
+      provider = new firebase.auth.GoogleAuthProvider();
+      break;
+    case LoginTypes.GitHub:
+      provider = new firebase.auth.GithubAuthProvider();
+      break;
     default:
-      return loginWithGoogle();
+      provider = new firebase.auth.GoogleAuthProvider();
+      break;
   }
-}
-
-async function loginWithGoogle() {
-  const provider = new firebase.auth.GoogleAuthProvider();
 
   const result = await firebase.auth().signInWithPopup(provider);
 

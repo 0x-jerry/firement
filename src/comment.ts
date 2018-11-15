@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import * as marked from 'marked';
-import { login } from './login';
+import { login, LoginTypes } from './login';
 
 function init(config) {
   firebase.initializeApp(config);
@@ -13,16 +13,22 @@ document.getElementById('firement-content').onkeyup = (e) => {
   document.getElementById('firement-preview').innerHTML = markdown;
 };
 
-document.getElementById('login').onclick = () => {
-  login().then((data) => {
+document.getElementById('login-google').onclick = () => {
+  login(LoginTypes.Google).then((data) => {
     console.log(data);
   });
 };
 
-const form = document.getElementById('commit');
+document.getElementById('login-github').onclick = () => {
+  login(LoginTypes.GitHub).then((data) => {
+    console.log(data);
+  });
+};
 
-form.onsubmit = (ev) => {
-  let elements = Array.from(ev.srcElement as HTMLFormElement) as HTMLInputElement[];
+document.getElementById('commit').onsubmit = (ev) => {
+  let elements = Array.from(
+    ev.srcElement as HTMLFormElement,
+  ) as HTMLInputElement[];
 
   elements = elements.filter((e) => !!e.name);
 
