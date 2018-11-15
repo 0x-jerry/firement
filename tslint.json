@@ -1,4 +1,7 @@
 {
   "extends": "tslint:recommended",
-  "rulesDirectory": ["./src", "./index.ts"]
+  "rulesDirectory": ["./src", "./index.ts"],
+  "rules": {
+    "quotemark": [true, "single"]
+  }
 }

@@ -21,9 +21,9 @@ async function loginWithGoogle() {
   const result = await firebase.auth().signInWithPopup(provider);
 
   return {
+    avatar: result.user.photoURL,
     email: result.user.email,
     uid: result.user.uid,
-    avatar: result.user.photoURL,
   };
 }
 
