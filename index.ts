@@ -1,4 +1,3 @@
-/*eslint-disable */
 import { init } from './src/comment.js';
 
 // Initialize Firebase
@@ -12,5 +11,3 @@ const config = {
 };
 
 init(config);
-
-console.log(process.env.NODE_ENV);

@@ -7,7 +7,10 @@ const Dotenv = require('dotenv-webpack');
 
 module.exports = merge(baseConfig, {
   devServer: {
-    contentBase: sPath.join(__dirname, 'dist'),
+    contentBase: [
+      sPath.join(__dirname, 'dist'),
+      sPath.join(__dirname, 'static'),
+    ],
     compress: true,
     port: process.env.PORT,
     hot: true,
@@ -16,7 +19,7 @@ module.exports = merge(baseConfig, {
   devtool: 'source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new CopyWebpackPlugin(['./index.html', './index.css']),
+    new CopyWebpackPlugin(['./static']),
     new Dotenv(),
   ],
 });

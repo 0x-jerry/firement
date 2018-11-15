@@ -5,7 +5,7 @@ const sPath = require('path');
 
 module.exports = {
   mode: isDev ? 'development' : 'production',
-  entry: sPath.join(__dirname, 'index.js'),
+  entry: sPath.join(__dirname, 'index.ts'),
   output: {
     path: sPath.join(__dirname, 'dist'),
     filename: 'index.js',
@@ -13,16 +13,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js?$/,
+        test: /\.[tj]s?$/,
         include: [sPath.join(__dirname, 'src')],
         use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-          },
+          loader: 'ts-loader',
         },
       },
     ],
+  },
+  resolve: {
+    extensions: ['.js', '.ts'],
   },
   externals: {
     firebase: 'firebase',
