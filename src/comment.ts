@@ -1,13 +1,15 @@
-import firebase from 'firebase';
+import * as firebase from 'firebase';
 import { login } from './login';
-import marked from 'marked';
+import * as marked from 'marked';
 
 function init(config) {
   firebase.initializeApp(config);
 }
 
 document.getElementById('firement-content').onkeyup = (e) => {
-  const markdown = marked(e.target.value);
+  const element = <HTMLInputElement>e.target;
+
+  const markdown = marked(element.value);
   document.getElementById('firement-preview').innerHTML = markdown;
 };
 
@@ -19,16 +21,17 @@ document.getElementById('login').onclick = () => {
 
 const form = document.getElementById('commit');
 
-/**
- * @param {Event} e
- */
 form.onsubmit = (e) => {
-  const elements = Array.from(e.srcElement).filter((e) => !!e.name);
+  let elements = <HTMLInputElement[]>Array.from(<HTMLFormElement>e.srcElement);
+
+  elements = elements.filter((e: HTMLInputElement) => !!e.name);
+
   const data = {};
-  elements.forEach((e) => {
-    data[e.name] = e.value;
-  });
+
+  elements.forEach((e) => (data[e.name] = e.value));
+
   console.log(data);
+
   e.preventDefault();
 };
 

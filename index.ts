@@ -1,4 +1,4 @@
-import { init } from './src/comment.js';
+import { init } from './src/comment';
 
 // Initialize Firebase
 const config = {
