@@ -4,7 +4,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const sPath = require('path');
 
 module.exports = merge(baseConfig, {
-  entry: sPath.join(__dirname, 'src', 'comment.js'),
+  entry: sPath.join(__dirname, 'src', 'comment.ts'),
   output: {
     library: 'firement',
   },

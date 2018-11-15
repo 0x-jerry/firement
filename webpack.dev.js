@@ -4,6 +4,7 @@ const merge = require('webpack-merge');
 const sPath = require('path');
 const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = merge(baseConfig, {
   devServer: {
@@ -19,7 +20,11 @@ module.exports = merge(baseConfig, {
   devtool: 'source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new CopyWebpackPlugin(['./static']),
+    new CopyWebpackPlugin([{from :'./static', to : 'static'}]),
     new Dotenv(),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: sPath.join(__dirname, 'index.html')
+    })
   ],
 });
