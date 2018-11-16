@@ -1,6 +1,6 @@
 import * as marked from 'marked';
 import { getArticleComment, init, pushComment } from './src/comment';
-import { login, LoginTypes } from './src/login';
+import { login, LoginTypes, logout } from './src/login';
 
 const loggedInfo = {
   logged: false,
@@ -29,21 +29,17 @@ document.getElementById('firement-content').onkeyup = (e) => {
   document.getElementById('firement-preview').innerHTML = markdown;
 };
 
-document.getElementById('login-google').onclick = () => {
-  login(LoginTypes.Google).then((data) => {
-    console.log(data);
-    loggedInfo.logged = true;
-    loggedInfo.user = data;
-  });
-};
+const loginButtons = document.getElementsByClassName('firement-login');
 
-document.getElementById('login-github').onclick = () => {
-  login(LoginTypes.GitHub).then((data) => {
-    console.log(data);
-    loggedInfo.logged = true;
-    loggedInfo.user = data;
-  });
-};
+for (const button of loginButtons) {
+  (button as HTMLDivElement).onclick = () => {
+    const id = button.getAttribute('data-id') as LoginTypes;
+    login(id).then((data) => {
+      loggedInfo.logged = true;
+      loggedInfo.user = data;
+    });
+  };
+}
 
 document.getElementById('commit').onsubmit = (ev) => {
   let elements = Array.from(ev.srcElement as HTMLFormElement) as HTMLInputElement[];
@@ -67,7 +63,7 @@ document.getElementById('commit').onsubmit = (ev) => {
   if (loggedInfo.logged) {
     pushComment('test', loggedInfo.user, data.content)
       .then(() => {
-        console.log('comment ok', data);
+        console.log('comment ok', loggedInfo);
       })
       .catch((err) => {
         console.warn('comment fail');
@@ -78,3 +74,18 @@ document.getElementById('commit').onsubmit = (ev) => {
 
   ev.preventDefault();
 };
+
+const signOut = document.getElementsByClassName('firement-logout')[0] as HTMLInputElement;
+
+if (signOut) {
+  signOut.onclick = () => {
+    logout()
+      .then(() => {
+        loggedInfo.logged = false;
+        console.log('sign out ok');
+      })
+      .catch(() => {
+        console.warn('sign out fail');
+      });
+  };
+}

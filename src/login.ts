@@ -30,4 +30,8 @@ async function login(type: LoginTypes = LoginTypes.Google): Promise<IUser> {
   };
 }
 
-export { login };
+function logout() {
+  return firebase.auth().signOut();
+}
+
+export { login, logout };

@@ -8,28 +8,23 @@
     <link rel="stylesheet" href="./static/index.css" />
   </head>
   <body>
-    <button id="login-google" class="login">google</button>
-    <button id="login-github" class="login">github</button>
 
     <form id="commit" class="firement-form">
       <div class="firement-column">
-        <label for="name" class="firement-label">name:</label>
-        <input name="name" type="text" class="firement-input" />
+        <label for="name" class="firement-label">name:</label> <input name="name" type="text" class="firement-input" />
         <label for="name" class="firement-label">email:</label>
         <input name="email" type="text" class="firement-input" />
+        <input type="button" class="firement-login" data-id="Google" value="Google"/>
+        <input type="button" class="firement-login" data-id="GitHub" value="GitHub"/>
+        <input type="button" class="firement-logout" value="SignOut"/>
         <input type="submit" value="submit" class="firement-button" />
       </div>
-      <textarea
-        id="firement-content"
-        name="content"
-        rows="10"
-        class="firement-content"
-      ></textarea>
+      <textarea id="firement-content" name="content" rows="10" class="firement-content"></textarea>
       <div id="firement-preview" class="firement-preview"></div>
     </form>
 
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
 
-    <!-- script will auto inject  -->
+    <!-- script will auto inject -->
   </body>
 </html>
