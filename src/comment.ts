@@ -24,7 +24,7 @@ function pushComment(title: string, user: IUser, content: string) {
   comment.content = content;
   comment.timestamp = new Date().getTime().toString();
 
-  firebase
+  return firebase
     .database()
     .ref(`/${title}/${uid()}/`)
     .set(comment);

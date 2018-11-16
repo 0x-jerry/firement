@@ -2,6 +2,11 @@ import * as marked from 'marked';
 import { getArticleComment, init, pushComment } from './src/comment';
 import { login, LoginTypes } from './src/login';
 
+const loggedInfo = {
+  logged: false,
+  user: null as IUser,
+};
+
 // Initialize Firebase
 const config = {
   apiKey: process.env.API_KEY,
@@ -14,11 +19,9 @@ const config = {
 
 init(config);
 
-getArticleComment('article').then((data) => {
+getArticleComment('test').then((data) => {
   console.log('data', data);
 });
-
-// pushComment('article', { name: 'test', avatar: '123', email: '22@qq.com', uid: '12312' }, 'hello');
 
 document.getElementById('firement-content').onkeyup = (e) => {
   const element = e.target as HTMLInputElement;
@@ -29,20 +32,49 @@ document.getElementById('firement-content').onkeyup = (e) => {
 document.getElementById('login-google').onclick = () => {
   login(LoginTypes.Google).then((data) => {
     console.log(data);
+    loggedInfo.logged = true;
+    loggedInfo.user = data;
   });
 };
 
 document.getElementById('login-github').onclick = () => {
   login(LoginTypes.GitHub).then((data) => {
     console.log(data);
+    loggedInfo.logged = true;
+    loggedInfo.user = data;
   });
 };
 
 document.getElementById('commit').onsubmit = (ev) => {
   let elements = Array.from(ev.srcElement as HTMLFormElement) as HTMLInputElement[];
   elements = elements.filter((e) => !!e.name);
-  const data = {};
+  const data = {
+    content: '',
+    email: '',
+    name: '',
+  };
+
   elements.forEach((e) => (data[e.name] = e.value));
-  console.log(data);
+
+  if (data.name.length) {
+    loggedInfo.user.name = data.name;
+  }
+
+  if (data.email.length) {
+    loggedInfo.user.email = data.email;
+  }
+
+  if (loggedInfo.logged) {
+    pushComment('test', loggedInfo.user, data.content)
+      .then(() => {
+        console.log('comment ok', data);
+      })
+      .catch((err) => {
+        console.warn('comment fail');
+      });
+  } else {
+    console.log('please sign in first');
+  }
+
   ev.preventDefault();
 };

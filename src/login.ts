@@ -5,7 +5,7 @@ export enum LoginTypes {
   GitHub = 'GitHub',
 }
 
-async function login(type: LoginTypes = LoginTypes.Google) {
+async function login(type: LoginTypes = LoginTypes.Google): Promise<IUser> {
   let provider: firebase.auth.AuthProvider = null;
 
   switch (type) {
@@ -25,6 +25,7 @@ async function login(type: LoginTypes = LoginTypes.Google) {
   return {
     avatar: result.user.photoURL,
     email: result.user.email,
+    name: result.user.displayName,
     uid: result.user.uid,
   };
 }
