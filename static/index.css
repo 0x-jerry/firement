@@ -1,46 +1,150 @@
-.firement-form {
-  box-sizing: border-box;
-}
-
-.firement-form * {
-  box-sizing: border-box;
+:root {
+  --color-primary: #fc4242;
 }
 
 .firement-form {
-  border: 1px solid gray;
-  padding: 10px;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.firement-form > * {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.firement-form {
+  border: 1px solid var(--color-primary);
+}
+
+.firement-form .firement-avatar {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  overflow: hidden;
 }
 
 .firement-form .firement-column {
-  border: 1px solid saddlebrown;
-  margin: 10px auto;
+  margin: 3px auto;
+  display: flex;
+}
+
+.firement-form .firement-column-right,
+.firement-form .firement-column-left {
+  display: flex;
+  align-items: center;
+}
+
+.firement-form .firement-column-left > *,
+.firement-form .firement-column-right > * {
+  margin: 0 5px;
+}
+
+.firement-form .firement-column-right {
+  flex: auto;
+  text-align: right;
+  justify-content: flex-end;
 }
 
 .firement-form .firement-label {
-  border: 1px solid green;
+  margin-right: 2px;
 }
 
 .firement-form .firement-input {
-  border: 1px solid red;
+  border: none;
+}
+
+.firement-form .firement-input[type='text'] {
+  border-bottom: 1px solid var(--color-primary);
 }
 
 .firement-form .firement-button {
-  border: 1px solid yellowgreen;
+  border: none;
+  color: #ffffff;
+  background-color: var(--color-primary);
+  padding: 5px 10px;
+}
+
+.firement-form .firement-content-box {
+  position: relative;
+}
+
+.firement-form .firement-submit {
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-radius: 0 0 0 5px;
 }
 
 .firement-form .firement-content {
-  border: 1px solid blue;
+  box-sizing: border-box;
   width: 100%;
   resize: none;
-  margin: 0 auto;
-  margin-bottom: 10px;
+  margin: 0;
+  padding: 5px;
+  outline: none;
+  border: none;
+  border: solid var(--color-primary);
+  border-width: 1px 0;
+  display: block;
 }
 
 .firement-form .firement-preview {
-  border: 1px solid goldenrod;
+  box-sizing: border-box;
+  position: relative;
   overflow: auto;
   width: 100%;
-  height: 200px;
+  height: 160px;
   resize: none;
-  margin: 0 auto;
+  margin: 0;
+  padding: 5px;
+}
+
+.firement-form .firement-preview::before {
+  content: 'Preview';
+  position: absolute;
+  top: 0;
+  right: 5px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.firement-comments {
+  box-sizing: border-box;
+}
+
+.firement-comments > * {
+  box-sizing: border-box;
+}
+
+.firement-comment {
+  border: 1px solid var(--color-primary);
+  margin-top: 10px;
+}
+
+.firement-comment .firement-content {
+  border-bottom: 1px solid var(--color-primary);
+  padding: 5px;
+}
+
+.firement-comment .firement-info {
+  padding: 2px 5px;
+  display: flex;
+}
+
+.firement-comment .firement-info-left {
+  display: flex;
+}
+
+.firement-comment .firement-info-right {
+  display: flex;
+  flex: auto;
+  justify-content: flex-end;
+}
+
+.firement-comment .firement-button {
+  border: none;
+  background: none;
+  color: #3e3e3e;
 }

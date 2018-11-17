@@ -11,5 +11,5 @@ interface IComment extends IUser {
 }
 
 interface IBlog {
-  [title: string]: IComment[];
+  [title: string]: IComment;
 }

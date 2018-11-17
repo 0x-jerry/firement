@@ -10,7 +10,7 @@ function uid(): string {
     .substr(2);
 }
 
-async function getArticleComment(title: string): Promise<IComment> {
+async function getArticleComment(title: string): Promise<IBlog> {
   const data = await firebase
     .database()
     .ref(`/${title}`)

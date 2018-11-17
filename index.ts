@@ -20,13 +20,20 @@ const config = {
 init(config);
 
 getArticleComment('test').then((data) => {
-  console.log('data', data);
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
+      const element = data[key];
+      addCommentDom(element, key);
+    }
+  }
 });
 
-document.getElementById('firement-content').onkeyup = (e) => {
+const content = document.getElementsByClassName('firement-content')[0] as HTMLInputElement;
+
+content.onkeyup = (e) => {
   const element = e.target as HTMLInputElement;
   const markdown = marked(element.value);
-  document.getElementById('firement-preview').innerHTML = markdown;
+  document.getElementsByClassName('firement-preview')[0].innerHTML = markdown;
 };
 
 const loginButtons = document.getElementsByClassName('firement-login');
@@ -75,17 +82,42 @@ document.getElementById('commit').onsubmit = (ev) => {
   ev.preventDefault();
 };
 
-const signOut = document.getElementsByClassName('firement-logout')[0] as HTMLInputElement;
+// const signOut = document.getElementsByClassName('firement-logout')[0] as HTMLInputElement;
 
-if (signOut) {
-  signOut.onclick = () => {
-    logout()
-      .then(() => {
-        loggedInfo.logged = false;
-        console.log('sign out ok');
-      })
-      .catch(() => {
-        console.warn('sign out fail');
-      });
-  };
+// if (signOut) {
+//   signOut.onclick = () => {
+//     logout()
+//       .then(() => {
+//         loggedInfo.logged = false;
+//         console.log('sign out ok');
+//       })
+//       .catch(() => {
+//         console.warn('sign out fail');
+//       });
+//   };
+// }
+
+function addCommentDom(comment: IComment, id: string) {
+  const template = `
+<section class="firement-comment" data-id="${id}">
+  <div class="firement-content">
+    ${marked(comment.content)}
+  </div>
+  <div class="firement-info">
+    <span class="firement-info-left">
+      <span class="firement-info-time">${new Date(+comment.timestamp).toDateString()}</span>
+      @<a href="mailto:${comment.email}" class="firement-info-name">${comment.name}</a>
+    </span>
+    <span class="firement-info-right">
+    ${
+      comment.uid === (loggedInfo.user && loggedInfo.user.uid)
+        ? '<button class="firement-button firement-edit">修改</button>'
+        : ''
+    }
+      <button class="firement-button firement-reply">回复</button>
+    </span>
+  </div>
+</section>`;
+
+  document.getElementsByClassName('firement-comments')[0].innerHTML += template;
 }
