@@ -11,6 +11,8 @@ module.exports = merge(baseConfig, {
     contentBase: [
       sPath.join(__dirname, 'dist'),
       sPath.join(__dirname, 'static'),
+      sPath.join(__dirname, 'index.html'),
+      sPath.join(__dirname, 'index.ts'),
     ],
     compress: true,
     port: process.env.PORT,
@@ -20,11 +22,11 @@ module.exports = merge(baseConfig, {
   devtool: 'source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new CopyWebpackPlugin([{from :'./static', to : 'static'}]),
+    new CopyWebpackPlugin([{ from: './static', to: 'static' }]),
     new Dotenv(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: sPath.join(__dirname, 'index.html')
-    })
+      template: sPath.join(__dirname, 'index.html'),
+    }),
   ],
 });

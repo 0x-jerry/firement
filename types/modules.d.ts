@@ -6,6 +6,7 @@ interface IUser {
 }
 
 interface IComment extends IUser {
+  likes: 0;
   content: string;
   timestamp: string;
 }

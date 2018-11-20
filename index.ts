@@ -82,24 +82,12 @@ document.getElementById('commit').onsubmit = (ev) => {
   ev.preventDefault();
 };
 
-// const signOut = document.getElementsByClassName('firement-logout')[0] as HTMLInputElement;
-
-// if (signOut) {
-//   signOut.onclick = () => {
-//     logout()
-//       .then(() => {
-//         loggedInfo.logged = false;
-//         console.log('sign out ok');
-//       })
-//       .catch(() => {
-//         console.warn('sign out fail');
-//       });
-//   };
-// }
-
 function addCommentDom(comment: IComment, id: string) {
   const template = `
 <section class="firement-comment" data-id="${id}">
+  <span class="firement-likes">
+    <a class="firement-likes-icon"></a>${+comment.likes || 0}
+  </span>
   <div class="firement-content">
     ${marked(comment.content)}
   </div>
