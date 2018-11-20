@@ -20,12 +20,23 @@ const config = {
 init(config);
 
 getArticleComment('test').then((data) => {
+  interface ISortComment {
+    key: string;
+    comment: IComment;
+  }
+
+  const list: ISortComment[] = [];
+
   for (const key in data) {
     if (data.hasOwnProperty(key)) {
       const element = data[key];
-      addCommentDom(element, key);
+      list.push({ key, comment: element });
     }
   }
+
+  list
+    .sort((a, b) => (a.comment.timestamp < b.comment.timestamp ? 1 : -1))
+    .forEach((e) => addCommentDom(e.comment, e.key));
 });
 
 const content = document.getElementsByClassName('firement-content')[0] as HTMLInputElement;
@@ -70,6 +81,8 @@ document.getElementById('commit').onsubmit = (ev) => {
   if (loggedInfo.logged) {
     pushComment('test', loggedInfo.user, data.content)
       .then(() => {
+        elements.forEach((e) => (e.value = ''));
+        alert('评论成功');
         console.log('comment ok', loggedInfo);
       })
       .catch((err) => {
@@ -93,7 +106,7 @@ function addCommentDom(comment: IComment, id: string) {
   </div>
   <div class="firement-info">
     <span class="firement-info-left">
-      <span class="firement-info-time">${new Date(+comment.timestamp).toDateString()}</span>
+      <span class="firement-info-time">${new Date(+comment.timestamp).toLocaleString()}</span>
       @<a href="mailto:${comment.email}" class="firement-info-name">${comment.name}</a>
     </span>
     <span class="firement-info-right">
