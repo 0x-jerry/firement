@@ -3,6 +3,7 @@
   "rulesDirectory": ["./src", "./index.ts", "./types"],
   "rules": {
     "space-before-function-paren": false,
-    "trailing-comma": true
+    "trailing-comma": true,
+    "quotemark": [true, "single", "jsx-double"]
   }
 }

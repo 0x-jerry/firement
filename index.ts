@@ -1,10 +1,11 @@
 import * as marked from 'marked'
-import { getArticleComment, init, pushComment } from './src/comment'
+import { getArticleComment, init, pushComment } from './src/firement'
 import { login, LoginTypes, logout } from './src/login'
+import { addCommentByTpl } from './src/components/template'
 
 const loggedInfo = {
   logged: false,
-  user: null as IUser
+  user: null as IUser,
 }
 
 // Initialize Firebase
@@ -14,32 +15,34 @@ const config = {
   databaseURL: `https://${process.env.PROJECT_ID}.firebaseio.com`,
   messagingSenderId: process.env.MESSAGING_SENDER_ID,
   projectId: process.env.PROJECT_ID,
-  storageBucket: process.env.PROJECT_ID + '.appspot.com'
+  storageBucket: process.env.PROJECT_ID + '.appspot.com',
 }
 
 init(config)
 
-getArticleComment('test').then((data) => {
-  interface ISortComment {
-    key: string
-    comment: IComment
-  }
-
-  const list: ISortComment[] = []
-
-  for (const key in data) {
-    if (data.hasOwnProperty(key)) {
-      const element = data[key]
-      list.push({ key, comment: element })
+getArticleComment('test')
+  .then((data) => {
+    interface ISortComment {
+      key: string
+      comment: IComment
     }
-  }
 
-  list
-    .sort((a, b) => (a.comment.timestamp < b.comment.timestamp ? 1 : -1))
-    .forEach((e) => addCommentDom(e.comment, e.key))
-}).catch(e => {
-  console.log(e)
-})
+    const list: ISortComment[] = []
+
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        const element = data[key]
+        list.push({ key, comment: element })
+      }
+    }
+
+    list
+      .sort((a, b) => (a.comment.timestamp < b.comment.timestamp ? 1 : -1))
+      .forEach((e) => addCommentDom(e.comment, e.key))
+  })
+  .catch((e) => {
+    console.log(e)
+  })
 
 const content = document.getElementsByClassName('firement-content')[0] as HTMLInputElement
 
@@ -54,12 +57,14 @@ const loginButtons = document.getElementsByClassName('firement-login')
 for (const button of loginButtons) {
   (button as HTMLDivElement).onclick = () => {
     const id = button.getAttribute('data-id') as LoginTypes
-    login(id).then((data) => {
-      loggedInfo.logged = true
-      loggedInfo.user = data
-    }).catch(e => {
-      console.log(e)
-    })
+    login(id)
+      .then((data) => {
+        loggedInfo.logged = true
+        loggedInfo.user = data
+      })
+      .catch((e) => {
+        console.log(e)
+      })
   }
 }
 
@@ -69,7 +74,7 @@ document.getElementById('commit').onsubmit = (ev) => {
   const data = {
     content: '',
     email: '',
-    name: ''
+    name: '',
   }
 
   elements.forEach((e) => (data[e.name] = e.value))
@@ -99,30 +104,7 @@ document.getElementById('commit').onsubmit = (ev) => {
   ev.preventDefault()
 }
 
-function addCommentDom (comment: IComment, id: string) {
-  const template = `
-<section class="firement-comment" data-id="${id}">
-  <span class="firement-likes">
-    <a class="firement-likes-icon"></a>${+comment.likes || 0}
-  </span>
-  <div class="firement-content">
-    ${marked(comment.content)}
-  </div>
-  <div class="firement-info">
-    <span class="firement-info-left">
-      <span class="firement-info-time">${new Date(+comment.timestamp).toLocaleString()}</span>
-      @<a href="mailto:${comment.email}" class="firement-info-name">${comment.name}</a>
-    </span>
-    <span class="firement-info-right">
-    ${
-    comment.uid === (loggedInfo.user && loggedInfo.user.uid)
-      ? '<button class="firement-button firement-edit">修改</button>'
-      : ''
-    }
-      <button class="firement-button firement-reply">回复</button>
-    </span>
-  </div>
-</section>`
-
-  document.getElementsByClassName('firement-comments')[0].innerHTML += template
+function addCommentDom(comment: IComment, id: string) {
+  const $firement = document.getElementById('firement')
+  addCommentByTpl($firement, id, comment)
 }

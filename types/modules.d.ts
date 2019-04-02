@@ -6,7 +6,7 @@ interface IUser {
 }
 
 interface IComment extends IUser {
-  likes: 0;
+  likes: number;
   content: string;
   timestamp: string;
 }
@@ -15,7 +15,7 @@ interface IBlog {
   [title: string]: IComment;
 }
 
-interface IInitOpts {
+interface IInitOptions {
   apiKey: string;
   authDomain: string;
   databaseURL: string;

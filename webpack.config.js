@@ -26,14 +26,14 @@ module.exports = (env) => {
     module: {
       rules: [
         {
-          test: /.[tj]s?$/,
+          test: /.[tj]sx?$/,
           include: [dir('src'), dir('index.ts')],
           loader: 'ts-loader',
         },
       ],
     },
     resolve: {
-      extensions: ['.js', '.ts'],
+      extensions: ['.js', '.ts', '.tsx'],
     },
     externals: {
       firebase: 'firebase',

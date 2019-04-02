@@ -6,6 +6,8 @@
     "noImplicitAny": false,
     "module": "esnext",
     "target": "es6",
-    "allowJs": true
+    "allowJs": true,
+    "jsx": "react",
+    "jsxFactory": "h"
   }
 }

@@ -30,6 +30,7 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
-    "marked": "^0.5.1"
+    "marked": "^0.5.1",
+    "preact": "^8.4.2"
   }
 }
