@@ -1,7 +1,4 @@
-import { h, render } from 'preact'
-import { init } from './src/firement'
-import CommentForm from './src/components/CommentForm'
-import Comments from './src/components/Comments'
+import firement from './src/index'
 
 // Initialize Firebase
 const config = {
@@ -13,12 +10,4 @@ const config = {
   storageBucket: process.env.PROJECT_ID + '.appspot.com',
 }
 
-init(config)
-
-render(
-  <div>
-    <CommentForm />
-    <Comments />
-  </div>,
-  document.getElementById('firement'),
-)
+firement(config, document.getElementById('firement'))

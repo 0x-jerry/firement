@@ -18,9 +18,10 @@ module.exports = (env) => {
    */
   const config = {
     mode: process.env.ENV_NODE,
-    entry: isDev ? dir('index.tsx') : dir('src/comment.ts'),
+    entry: isDev ? dir('index.tsx') : dir('src/index.tsx'),
     output: {
       library: 'firement',
+      libraryTarget: 'umd',
       path: outputPath,
     },
     module: {
@@ -38,7 +39,7 @@ module.exports = (env) => {
     externals: {
       firebase: 'firebase',
     },
-    devtool: isDev ? 'source-map' : 'inline-source-map',
+    devtool: 'source-map',
     plugins: isDev
       ? [
           new webpack.HotModuleReplacementPlugin(),

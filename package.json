@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server --env.dev",
-    "prod": "webpack"
+    "prod": "webpack --env.prod"
   },
   "devDependencies": {
     "@firebase/app-types": "^0.3.2",
