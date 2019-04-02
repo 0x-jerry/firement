@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import * as firebase from 'firebase'
 
 export enum LoginTypes {
   Google = 'Google',
@@ -6,32 +6,32 @@ export enum LoginTypes {
 }
 
 async function login(type: LoginTypes = LoginTypes.Google): Promise<IUser> {
-  let provider: firebase.auth.AuthProvider = null;
+  let provider: firebase.auth.AuthProvider = null
 
   switch (type) {
     case LoginTypes.Google:
-      provider = new firebase.auth.GoogleAuthProvider();
-      break;
+      provider = new firebase.auth.GoogleAuthProvider()
+      break
     case LoginTypes.GitHub:
-      provider = new firebase.auth.GithubAuthProvider();
-      break;
+      provider = new firebase.auth.GithubAuthProvider()
+      break
     default:
-      provider = new firebase.auth.GoogleAuthProvider();
-      break;
+      provider = new firebase.auth.GoogleAuthProvider()
+      break
   }
 
-  const result = await firebase.auth().signInWithPopup(provider);
+  const result = await firebase.auth().signInWithPopup(provider)
 
   return {
     avatar: result.user.photoURL,
     email: result.user.email,
     name: result.user.displayName,
     uid: result.user.uid,
-  };
+  }
 }
 
 function logout() {
-  return firebase.auth().signOut();
+  return firebase.auth().signOut()
 }
 
-export { login, logout };
+export { login, logout }
