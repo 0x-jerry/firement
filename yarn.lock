@@ -2526,6 +2526,11 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
+linkstate@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/linkstate/-/linkstate-1.1.1.tgz#cb9c29189baa7552295898f78f82b4055d6be108"
+  integrity sha512-5SICdxQG9FpWk44wSEoM2WOCUNuYfClp10t51XAIV5E7vUILF/dTYxf0vJw6bW2dUd2wcQon+LkNtRijpNLrig==
+
 loader-runner@^2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.3.1.tgz#026f12fe7c3115992896ac02ba022ba92971b979"

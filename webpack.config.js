@@ -18,7 +18,7 @@ module.exports = (env) => {
    */
   const config = {
     mode: process.env.ENV_NODE,
-    entry: isDev ? dir('index.ts') : dir('src/comment.ts'),
+    entry: isDev ? dir('index.tsx') : dir('src/comment.ts'),
     output: {
       library: 'firement',
       path: outputPath,
