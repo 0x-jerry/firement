@@ -1,5 +1,7 @@
 import { h, Component } from 'preact'
 import * as marked from 'marked'
+import { LoginTypes, login, logout } from '../login'
+import { pushComment } from '../firement'
 
 export interface ICommentFormProps {
   user?: IUser
@@ -8,7 +10,10 @@ export interface ICommentFormProps {
 export interface ICommentFormState {
   user: IUser
   markdownContent: string
+  commentContent: string
 }
+
+const defaultAvatar = './static/images/avatar.jpg'
 
 export default class CommentForm extends Component<ICommentFormProps, ICommentFormState> {
   constructor(props: ICommentFormProps) {
@@ -16,11 +21,12 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
     this.state = {
       user: props.user || {
         uid: '',
-        name: '匿名',
-        email: '无',
-        avatar: './static/images/avatar.jpg',
+        name: '---',
+        email: '---',
+        avatar: defaultAvatar,
       },
       markdownContent: '',
+      commentContent: '',
     }
   }
 
@@ -28,8 +34,39 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
     const el = e.target as HTMLInputElement
 
     this.setState({
+      commentContent: el.value || '',
       markdownContent: marked(el.value || ''),
     })
+  }
+
+  async handleLogin(type: LoginTypes, e?: Event) {
+    const user = await login(type)
+    if (type === LoginTypes.Anonymously) {
+      user.avatar = defaultAvatar
+      user.name = '匿名'
+      user.email = '无'
+    }
+
+    this.setState({
+      user,
+    })
+
+    console.log(user, type)
+  }
+
+  async handleLogout() {
+    await logout()
+    console.log('Sign out')
+  }
+
+  handleComment = async (e: Event) => {
+    e.preventDefault()
+    if (!this.state.user.uid) {
+      await this.handleLogin(LoginTypes.Anonymously)
+    }
+
+    await pushComment('test', this.state.user, this.state.commentContent)
+    console.log('comment ok')
   }
 
   render(props: ICommentFormProps, state: ICommentFormState) {
@@ -48,14 +85,24 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
             <span class="firement-input"> {state.user.email} </span>
           </div>
           <div class="firement-column-right">
-            <label class="firement-label">登录:</label>
-            <input type="button" class="firement-login" data-id="Google" value="Google" />
-            <input type="button" class="firement-login" data-id="GitHub" value="GitHub" />
-            <input type="button" class="firement-login" data-id="Anonymously" value="匿名" />
+            <label class="firement-label">登录方式:</label>
+            <input
+              type="button"
+              class="firement-login"
+              value="Google"
+              onClick={this.handleLogin.bind(this, LoginTypes.Google)}
+            />
+            <input
+              type="button"
+              class="firement-login"
+              value="GitHub"
+              onClick={this.handleLogin.bind(this, LoginTypes.GitHub)}
+            />
+            <input type="button" class="firement-login" value="登出" onClick={this.handleLogout.bind(this)} />
           </div>
         </div>
         <div class="firement-content-box">
-          <input type="submit" value="提交评论" class="firement-submit firement-button" />
+          <input type="submit" value="提交评论" class="firement-submit firement-button" onClick={this.handleComment} />
           <textarea
             name="content"
             rows={10}

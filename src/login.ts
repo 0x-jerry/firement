@@ -3,9 +3,10 @@ import * as firebase from 'firebase'
 export enum LoginTypes {
   Google = 'Google',
   GitHub = 'GitHub',
+  Anonymously = 'Anonymously',
 }
 
-async function login(type: LoginTypes = LoginTypes.Google): Promise<IUser> {
+async function login(type: LoginTypes = LoginTypes.Anonymously): Promise<IUser> {
   let provider: firebase.auth.AuthProvider = null
 
   switch (type) {
@@ -16,11 +17,11 @@ async function login(type: LoginTypes = LoginTypes.Google): Promise<IUser> {
       provider = new firebase.auth.GithubAuthProvider()
       break
     default:
-      provider = new firebase.auth.GoogleAuthProvider()
+      provider = null
       break
   }
 
-  const result = await firebase.auth().signInWithPopup(provider)
+  const result = provider ? await firebase.auth().signInWithPopup(provider) : await firebase.auth().signInAnonymously()
 
   return {
     avatar: result.user.photoURL,
