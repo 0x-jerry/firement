@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "./dist/",
     "moduleResolution": "node",
     "sourceMap": true,
@@ -9,5 +10,6 @@
     "allowJs": true,
     "jsx": "react",
     "jsxFactory": "h"
-  }
+  },
+  "include": ["./src/**/*", "./@types/**/*"]
 }

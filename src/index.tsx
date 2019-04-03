@@ -2,6 +2,7 @@ import { h, render, Component } from 'preact'
 import { init, getArticleComment } from './firement'
 import CommentForm from './components/CommentForm'
 import Comments, { ISortComment } from './components/Comments'
+import './style.less'
 
 export interface IAppState {
   comments: ISortComment[]
@@ -45,8 +46,8 @@ class App extends Component<{}, IAppState> {
 
   render() {
     return (
-      <div>
-        <CommentForm refreshComments={this.refreshComments.bind(this)}/>
+      <div class="firement-root">
+        <CommentForm refreshComments={this.refreshComments.bind(this)} />
         <Comments comments={this.state.comments} />
       </div>
     )

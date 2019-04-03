@@ -18,6 +18,7 @@ module.exports = (env) => {
    */
   const config = {
     mode: process.env.ENV_NODE,
+    context: __dirname,
     entry: isDev ? dir('index.tsx') : dir('src/index.tsx'),
     output: {
       library: 'firement',
@@ -27,9 +28,33 @@ module.exports = (env) => {
     module: {
       rules: [
         {
-          test: /.[tj]sx?$/,
-          include: [dir('src'), dir('index.ts')],
-          loader: 'ts-loader',
+          test: /\.less$/,
+          use: [
+            {
+              loader: 'style-loader', // creates style nodes from JS strings
+            },
+            {
+              loader: 'css-loader', // translates CSS into CommonJS
+              options: {
+                sourceMap: true,
+              },
+            },
+            {
+              loader: 'less-loader', // compiles Less to CSS
+              options: {
+                sourceMap: true,
+              },
+            },
+          ],
+        },
+        {
+          test: /\.[tj]sx?$/,
+          exclude: [dir('node_modules')],
+          use: [
+            {
+              loader: 'ts-loader',
+            },
+          ],
         },
       ],
     },
