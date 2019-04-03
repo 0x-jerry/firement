@@ -1,10 +1,13 @@
 import { h, render, Component } from 'preact'
-import { init, getArticleComment } from './firement'
+import { init, getArticleComment, addLike } from './firement'
 import CommentForm from './components/CommentForm'
 import Comments, { ISortComment } from './components/Comments'
 import './style.less'
+import { LoginTypes, login } from './login'
 
 export interface IAppState {
+  user: IUser
+  logged: boolean
   comments: ISortComment[]
 }
 
@@ -13,6 +16,13 @@ class App extends Component<{}, IAppState> {
     super()
     this.state = {
       comments: [],
+      logged: false,
+      user: {
+        uid: '',
+        name: '匿名',
+        email: null,
+        avatar: configs.defaultAvatar,
+      },
     }
   }
 
@@ -20,22 +30,56 @@ class App extends Component<{}, IAppState> {
     this.refreshComments()
   }
 
-  async refreshComments() {
+  refreshComments = async () => {
     const comments = await this.getComments()
     this.setState({
       comments,
     })
   }
 
+  handleLogin = async (type: LoginTypes) => {
+    try {
+      const user = await login(type)
+      if (type === LoginTypes.Anonymously) {
+        user.avatar = configs.defaultAvatar
+        user.name = '匿名'
+        user.email = null
+      }
+
+      this.setState({
+        user,
+        logged: true,
+      })
+    } catch (error) {
+      alert('登录失败: ' + error)
+    }
+  }
+
+  handleLikes = async (comment: IComment) => {
+    try {
+      await addLike(configs.blogTitle, comment.id, this.state.user.uid)
+      await this.refreshComments()
+    } catch (error) {
+      alert('评论失败:' + error)
+    }
+  }
+
   async getComments() {
-    const data = await getArticleComment('test')
+    const data = await getArticleComment(configs.blogTitle)
 
     const list: ISortComment[] = []
 
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
         const element = data[key]
-        list.push({ key, comment: element })
+
+        list.push({
+          key,
+          comment: {
+            ...element,
+            likes: element.likes || {},
+          },
+        })
       }
     }
 
@@ -44,18 +88,30 @@ class App extends Component<{}, IAppState> {
     return list
   }
 
-  render() {
+  render(p, s: IAppState) {
     return (
       <div class="firement-root">
-        <CommentForm refreshComments={this.refreshComments.bind(this)} />
-        <Comments comments={this.state.comments} />
+        <CommentForm
+          refreshComments={this.refreshComments}
+          user={s.user}
+          logged={s.logged}
+          handleLogin={this.handleLogin}
+        />
+        <Comments comments={this.state.comments} handleLikes={this.handleLikes} />
       </div>
     )
   }
 }
 
+export const configs = {
+  defaultAvatar: './static/images/avatar.jpg',
+  blogTitle: '',
+}
+
 export default function(config: IInitOptions, element: HTMLElement) {
   init(config)
+
+  configs.blogTitle = config.blogTitle
 
   render(<App />, element)
 }

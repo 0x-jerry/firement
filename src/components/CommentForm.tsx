@@ -1,31 +1,27 @@
 import { h, Component } from 'preact'
-import { LoginTypes, login, logout } from '../login'
+import { LoginTypes, logout } from '../login'
 import { pushComment } from '../firement'
 import { renderMD } from '../utils'
+import { configs } from '../index'
 
 export interface ICommentFormProps {
   user?: IUser
+  logged: boolean
   refreshComments: Function
+  handleLogin: Function
 }
 
 export interface ICommentFormState {
-  user: IUser
+  isPreview: boolean
   markdownContent: string
   commentContent: string
 }
 
-const defaultAvatar = './static/images/avatar.jpg'
-
 export default class CommentForm extends Component<ICommentFormProps, ICommentFormState> {
   constructor(props: ICommentFormProps) {
-    super()
+    super(props)
     this.state = {
-      user: props.user || {
-        uid: '',
-        name: '匿名',
-        email: null,
-        avatar: defaultAvatar,
-      },
+      isPreview: false,
       markdownContent: '',
       commentContent: '',
     }
@@ -40,16 +36,9 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
     })
   }
 
-  async handleLogin(type: LoginTypes, e?: Event) {
-    const user = await login(type)
-    if (type === LoginTypes.Anonymously) {
-      user.avatar = defaultAvatar
-      user.name = '匿名'
-      user.email = null
-    }
-
+  handlePreview = () => {
     this.setState({
-      user,
+      isPreview: !this.state.isPreview,
     })
   }
 
@@ -59,51 +48,84 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
 
   handleComment = async (e: Event) => {
     e.preventDefault()
-    if (!this.state.user.uid) {
-      await this.handleLogin(LoginTypes.Anonymously)
+
+    if (!(this.state.commentContent && this.props.logged)) {
+      return
     }
 
-    await pushComment('test', this.state.user, this.state.commentContent)
+    await pushComment(configs.blogTitle, this.props.user, this.state.commentContent)
 
     this.props.refreshComments()
-    console.log('comment ok')
+  }
+
+  handleLogin(type: LoginTypes, e) {
+    this.props.handleLogin(type)
   }
 
   render(props: ICommentFormProps, state: ICommentFormState) {
+    const previewText = '预览: ' + (state.isPreview ? 'ON' : 'OFF')
     return (
       <form class="firement-form">
-        <div class="firement-column">
-          <div class="firement-column-left">
-            <img src={state.user.avatar} alt="avatar" class="firement-avatar" />
-            <span class="firement-label"> {state.user.name} </span>
-          </div>
-          <div class="firement-column-right">
-            <label class="firement-label">登录方式:</label>
-            <input
-              type="button"
-              class="firement-login"
-              value="Google"
-              onClick={this.handleLogin.bind(this, LoginTypes.Google)}
-            />
-            <input
-              type="button"
-              class="firement-login"
-              value="GitHub"
-              onClick={this.handleLogin.bind(this, LoginTypes.GitHub)}
-            />
-            <input type="button" class="firement-login" value="登出" onClick={this.handleLogout.bind(this)} />
+        <div class="firement-form__header">
+          <div class="firement-row">
+            <img src={props.user.avatar} alt="avatar" class="firement-avatar" />
+            <span class="firement-form__label"> {props.user.name} </span>
           </div>
         </div>
-        <div class="firement-content-box">
-          <input type="submit" value="提交评论" class="firement-submit firement-button" onClick={this.handleComment} />
-          <textarea
-            name="content"
-            rows={10}
-            placeholder="Markdown Supported"
-            class="firement-content"
-            onInput={this.previewMD}
-          />
-          <div class="firement-preview" dangerouslySetInnerHTML={{ __html: state.markdownContent }} />
+        <div class="firement-form__content">
+          {props.logged ? (
+            <div className="firement-box firement-form__comment_input">
+              {this.state.isPreview ? (
+                <div class="firement-box firement-form__preview">
+                  <div
+                    className="firement-form__preview_content"
+                    dangerouslySetInnerHTML={{ __html: state.markdownContent }}
+                  />
+                </div>
+              ) : (
+                <textarea
+                  name="content"
+                  placeholder="Markdown Supported"
+                  class="firement-form__textarea"
+                  value={state.commentContent}
+                  onInput={this.previewMD}
+                />
+              )}
+            </div>
+          ) : (
+            <div className="firement-box firement-form__not_login">
+              <label class="firement-form__label">请登录后评论</label>
+              <input
+                type="button"
+                class="firement-button"
+                value="Google"
+                onClick={this.handleLogin.bind(this, LoginTypes.Google)}
+              />
+              <input
+                type="button"
+                class="firement-button"
+                value="GitHub"
+                onClick={this.handleLogin.bind(this, LoginTypes.GitHub)}
+              />
+              <input
+                type="button"
+                class="firement-button"
+                value="Anonymously"
+                onClick={this.handleLogin.bind(this, LoginTypes.Anonymously)}
+              />
+            </div>
+          )}
+        </div>
+        <div className="firement-row">
+          <div className="firement-row__right">
+            <input type="button" value={previewText} class="firement-button" onClick={this.handlePreview} />
+            <input
+              type="submit"
+              value="提交评论"
+              class="firement-submit firement-button"
+              onClick={this.handleComment}
+            />
+          </div>
         </div>
       </form>
     )

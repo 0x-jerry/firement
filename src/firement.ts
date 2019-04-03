@@ -18,31 +18,54 @@ async function getArticleComment(title: string): Promise<IBlog> {
   return data.val()
 }
 
-function pushComment(title: string, user: IUser, content: string) {
-  const comment = user as IComment
+async function updateCommentInfo(title: string, uid: string, info: object) {
+  const keys = Object.keys(info)
 
-  comment.content = content
-  comment.timestamp = new Date().getTime().toString()
+  for await (const key of keys) {
+    firebase
+      .database()
+      .ref(`/${title}/${uid}/${key}`)
+      .set(info[key])
+  }
+}
+
+function pushComment(title: string, user: IUser, content: string) {
+  const comment: IComment = {
+    ...user,
+    id: uid(),
+    likes: {},
+    content,
+    timestamp: new Date().getTime().toString(),
+  }
 
   return firebase
     .database()
-    .ref(`/${title}/${uid()}/`)
+    .ref(`/${title}/${comment.id}/`)
     .set(comment)
 }
 
-async function addLike(title: string, uid: string) {
+async function addLike(title: string, id: string, uid: string) {
+  if (!uid) {
+    throw new Error('please login')
+  }
+
   const data = await firebase
     .database()
-    .ref(`/${title}/${uid}`)
+    .ref(`/${title}/${id}`)
     .once('value')
 
   const comment: IComment = data.val()
-  const likes = (comment.likes || 0) + 1
+  comment.likes = comment.likes || {}
 
-  return firebase
-    .database()
-    .ref(`/${title}/${uid}/likes`)
-    .set(likes)
+  if (comment.likes[uid]) {
+    throw new Error('liked')
+  }
+
+  comment.likes[uid] = true
+
+  return updateCommentInfo(title, id, {
+    likes: comment.likes,
+  })
 }
 
-export { init, getArticleComment, pushComment }
+export { init, getArticleComment, pushComment, updateCommentInfo, addLike }

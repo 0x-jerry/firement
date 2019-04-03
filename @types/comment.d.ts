@@ -7,7 +7,10 @@ interface IUser {
 }
 
 interface IComment extends IUser {
-  likes: number
+  id: string
+  likes: {
+    [key: string]: boolean
+  }
   content: string
   timestamp: string
 }
@@ -23,4 +26,5 @@ interface IInitOptions {
   messagingSenderId: string
   projectId: string
   storageBucket: string
+  blogTitle: string
 }

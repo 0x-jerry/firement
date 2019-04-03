@@ -8,6 +8,7 @@ const config = {
   messagingSenderId: process.env.MESSAGING_SENDER_ID,
   projectId: process.env.PROJECT_ID,
   storageBucket: process.env.PROJECT_ID + '.appspot.com',
+  blogTitle: 'test'
 }
 
 firement(config, document.getElementById('firement'))
