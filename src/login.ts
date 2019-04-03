@@ -23,11 +23,14 @@ async function login(type: LoginTypes = LoginTypes.Anonymously): Promise<IUser> 
 
   const result = provider ? await firebase.auth().signInWithPopup(provider) : await firebase.auth().signInAnonymously()
 
+  const profile: any = result.additionalUserInfo.profile
+
   return {
     avatar: result.user.photoURL,
     email: result.user.email,
     name: result.user.displayName,
     uid: result.user.uid,
+    homePage: type === 'GitHub' ? profile.html_url : null,
   }
 }
 

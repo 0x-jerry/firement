@@ -1,18 +1,25 @@
-import * as marked from 'marked'
 import { h } from 'preact'
+import { renderMD } from '../utils'
 
-export default function Comment(props: IComment) {
+export interface ICommentProps extends IComment {
+  index: number
+}
+
+export default function Comment(props: ICommentProps) {
+  const pageLink = props.homePage
+
   return (
     <section className="firement-comment" data-id={props.uid}>
       <span className="firement-likes">
+        # {props.index}
         <i className="firement-likes-icon" />
         {+props.likes || 0}
       </span>
-      <div className="firement-content" dangerouslySetInnerHTML={{ __html: marked(props.content) }} />
+      <div className="firement-content" dangerouslySetInnerHTML={{ __html: renderMD(props.content) }} />
       <div className="firement-info">
         <span className="firement-info-left">
           <span className="firement-info-time">{new Date(+props.timestamp).toLocaleDateString()}</span>@
-          <a href="mailto:{props.email}" className="firement-info-name">
+          <a href={pageLink} target="_blank" className="firement-info-name">
             {props.name}
           </a>
         </span>

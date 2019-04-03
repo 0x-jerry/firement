@@ -1,8 +1,9 @@
 interface IUser {
   uid: string;
   name: string;
-  email: string;
   avatar: string;
+  email?: string;
+  homePage?: string;
 }
 
 interface IComment extends IUser {

@@ -1,10 +1,11 @@
 import { h, Component } from 'preact'
-import * as marked from 'marked'
 import { LoginTypes, login, logout } from '../login'
 import { pushComment } from '../firement'
+import { renderMD } from '../utils'
 
 export interface ICommentFormProps {
   user?: IUser
+  refreshComments: Function
 }
 
 export interface ICommentFormState {
@@ -21,8 +22,8 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
     this.state = {
       user: props.user || {
         uid: '',
-        name: '---',
-        email: '---',
+        name: '匿名',
+        email: null,
         avatar: defaultAvatar,
       },
       markdownContent: '',
@@ -35,7 +36,7 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
 
     this.setState({
       commentContent: el.value || '',
-      markdownContent: marked(el.value || ''),
+      markdownContent: renderMD(el.value || ''),
     })
   }
 
@@ -44,19 +45,16 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
     if (type === LoginTypes.Anonymously) {
       user.avatar = defaultAvatar
       user.name = '匿名'
-      user.email = '无'
+      user.email = null
     }
 
     this.setState({
       user,
     })
-
-    console.log(user, type)
   }
 
   async handleLogout() {
     await logout()
-    console.log('Sign out')
   }
 
   handleComment = async (e: Event) => {
@@ -66,6 +64,8 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
     }
 
     await pushComment('test', this.state.user, this.state.commentContent)
+
+    this.props.refreshComments()
     console.log('comment ok')
   }
 
@@ -75,14 +75,7 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
         <div class="firement-column">
           <div class="firement-column-left">
             <img src={state.user.avatar} alt="avatar" class="firement-avatar" />
-            <label for="name" class="firement-label">
-              昵称:
-            </label>
-            <span class="firement-input"> {state.user.name} </span>
-            <label for="email" class="firement-label">
-              邮箱:
-            </label>
-            <span class="firement-input"> {state.user.email} </span>
+            <span class="firement-label"> {state.user.name} </span>
           </div>
           <div class="firement-column-right">
             <label class="firement-label">登录方式:</label>
