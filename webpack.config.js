@@ -72,7 +72,7 @@ module.exports = (env) => {
           new Dotenv(),
           new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: dir('index.html'),
+            template: dir('index.dev.html'),
           }),
         ]
       : [new CleanWebpackPlugin([outputPath])],
