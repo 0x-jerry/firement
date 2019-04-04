@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import { LoginTypes, logout } from '../login'
+import { LoginTypes, logout } from '../auth'
 import { pushComment } from '../firement'
 import { renderMD } from '../utils'
 import { configs } from '../index'

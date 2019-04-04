@@ -3,7 +3,7 @@ import { init, getArticleComment, addLike } from './firement'
 import CommentForm from './components/CommentForm'
 import Comments, { ISortComment } from './components/Comments'
 import './style.less'
-import { LoginTypes, login } from './login'
+import { LoginTypes, login } from './auth'
 
 export interface IAppState {
   user: IUser
