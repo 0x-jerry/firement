@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "linkstate": "^1.1.1",
-    "marked": "^0.5.1",
+    "marked": "^0.6.1",
     "preact": "^8.4.2"
   }
 }
