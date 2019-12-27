@@ -1,6 +1,7 @@
 import { h, Component } from 'preact'
 import Comment from './Comment'
 import { IComment } from '../typedef'
+import { configs } from 'src/configs'
 
 export interface ISortComment {
   key: string
@@ -25,7 +26,7 @@ export default class Comments extends Component<ICommentsProps, {}> {
 
     const fakeMsg: IComment = {
       id: '1231',
-      avatar: './static/images/avatar.jpg',
+      avatar: configs.defaultAvatar,
       content: '# test',
       email: '',
       likes: {},

@@ -1,6 +1,7 @@
 import { h } from 'preact'
 import { renderMD } from '../utils'
 import { IComment } from '../typedef'
+import { configs } from 'src/configs'
 
 export interface ICommentProps extends IComment {
   index: number
@@ -18,12 +19,16 @@ export default function Comment(props: ICommentProps) {
 
   const likeNum = Object.keys(props.likes).filter(id => props.likes[id]).length
 
+  const avatar = props.avatar.match(/^[a-z]+\:\/\//)
+    ? props.avatar
+    : configs.defaultAvatar
+
   return (
     <section className="firement-comment firement-form" data-id={props.uid}>
       <div className="firement-form__header firement-row">
         <div className="firement-row__left">
           <a href={pageLink}>
-            <img src={props.avatar} alt="avatar" className="firement-avatar" />
+            <img src={avatar} alt="avatar" className="firement-avatar" />
           </a>
           <span className="firement-form__label">{props.name}</span>
           <span className="firement-form__label firement-comment__time">
