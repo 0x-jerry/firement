@@ -89,7 +89,7 @@ class App extends Component<{}, IAppState> {
     return list
   }
 
-  render(p, s: IAppState) {
+  render(p: {}, s: IAppState) {
     return (
       <div class="firement-root">
         <CommentForm
@@ -98,10 +98,7 @@ class App extends Component<{}, IAppState> {
           logged={s.logged}
           handleLogin={this.handleLogin}
         />
-        <Comments
-          comments={this.state.comments}
-          handleLikes={this.handleLikes}
-        />
+        <Comments comments={this.state.comments} handleLikes={this.handleLikes} />
       </div>
     )
   }

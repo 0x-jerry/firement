@@ -7,7 +7,15 @@ const reload = require('rollup-plugin-livereload')
 
 const isProd = process.env.NODE_ENV === 'production'
 
-const devPlugins = isProd ? [] : [serve(), reload()]
+const devPlugins = isProd
+  ? []
+  : [
+      serve(),
+      reload({
+        watch: 'dist',
+        verbose: false // Disable console output
+      })
+    ]
 
 /**
  * @type {import('rollup').RollupOptions}

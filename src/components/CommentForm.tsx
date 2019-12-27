@@ -66,7 +66,7 @@ export default class CommentForm extends Component<
     this.props.refreshComments()
   }
 
-  handleLogin(type: LoginTypes, e) {
+  handleLogin(type: LoginTypes) {
     this.props.handleLogin(type)
   }
 

@@ -1,6 +1,6 @@
-import { IConfigs } from "./configs";
+import { IConfigs } from './configs'
 
-interface IUser {
+export interface IUser {
   uid: string
   name: string
   avatar: string
@@ -8,7 +8,7 @@ interface IUser {
   homePage?: string
 }
 
-interface IComment extends IUser {
+export interface IComment extends IUser {
   id: string
   likes: {
     [key: string]: boolean
@@ -17,15 +17,19 @@ interface IComment extends IUser {
   timestamp: string
 }
 
-interface IBlog {
+export interface IBlog {
   [title: string]: IComment
 }
 
-interface IInitOptions extends IConfigs {
+export interface IInitOptions extends IConfigs {
   apiKey: string
   authDomain: string
   databaseURL: string
   messagingSenderId: string
   projectId: string
   storageBucket: string
+}
+
+export interface ObjectAny {
+  [key: string]: any
 }

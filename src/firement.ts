@@ -1,25 +1,35 @@
 import firebase from 'firebase'
-import { IComment, IUser, IInitOptions, IBlog } from './typedef'
+import { IComment, IUser, IInitOptions, IBlog, ObjectAny } from './typedef'
+import { uuid } from './utils'
 
-function init(config: IInitOptions) {
+export enum ErrorType {
+  NeedLogin
+}
+
+export class CustomError extends Error {
+  type: ErrorType
+  constructor(msg: string, type: ErrorType) {
+    super(msg)
+    this.type = type
+  }
+}
+
+export function init(config: IInitOptions) {
   firebase.initializeApp(config)
 }
 
-function uid(): string {
-  return Math.random()
-    .toString()
-    .substr(2)
-}
-
-async function getArticleComment(title: string): Promise<IBlog> {
+export async function getArticleComment(title: string): Promise<IBlog> {
   const data = await firebase
     .database()
     .ref(`/${title}`)
     .once('value')
-  return data.val()
+  const result = await data.val()
+
+  console.log(result)
+  return result
 }
 
-async function updateCommentInfo(title: string, uid: string, info: object) {
+export async function updateCommentInfo(title: string, uid: string, info: ObjectAny) {
   const keys = Object.keys(info)
 
   for await (const key of keys) {
@@ -30,10 +40,10 @@ async function updateCommentInfo(title: string, uid: string, info: object) {
   }
 }
 
-function pushComment(title: string, user: IUser, content: string) {
+export function pushComment(title: string, user: IUser, content: string) {
   const comment: IComment = {
     ...user,
-    id: uid(),
+    id: uuid(),
     likes: {},
     content,
     timestamp: new Date().getTime().toString()
@@ -45,9 +55,9 @@ function pushComment(title: string, user: IUser, content: string) {
     .set(comment)
 }
 
-async function addLike(title: string, id: string, uid: string) {
+export async function addLike(title: string, id: string, uid: string) {
   if (!uid) {
-    throw new Error('please login')
+    throw new CustomError('Please login', ErrorType.NeedLogin)
   }
 
   const data = await firebase
@@ -59,14 +69,36 @@ async function addLike(title: string, id: string, uid: string) {
   comment.likes = comment.likes || {}
 
   if (comment.likes[uid]) {
-    throw new Error('liked')
+    return
   }
 
   comment.likes[uid] = true
+
+  updateCommentInfo(title, id, {
+    likes: comment.likes
+  })
+}
+
+export async function removeLike(title: string, id: string, uid: string) {
+  if (!uid) {
+    throw new CustomError('Please login', ErrorType.NeedLogin)
+  }
+
+  const data = await firebase
+    .database()
+    .ref(`/${title}/${id}`)
+    .once('value')
+
+  const comment: IComment = data.val()
+  comment.likes = comment.likes || {}
+
+  if (comment.likes[uid]) {
+    return
+  }
+
+  comment.likes[uid] = false
 
   return updateCommentInfo(title, id, {
     likes: comment.likes
   })
 }
-
-export { init, getArticleComment, pushComment, updateCommentInfo, addLike }

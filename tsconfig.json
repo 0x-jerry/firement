@@ -5,7 +5,7 @@
     "outDir": "dist",
     "moduleResolution": "node",
     "sourceMap": false,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
     "module": "esnext",
     "target": "esnext",
