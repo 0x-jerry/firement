@@ -1,6 +1,7 @@
 import firebase from 'firebase'
 import { IComment, IUser, IInitOptions, IBlog, ObjectAny } from './typedef'
 import { uuid } from './utils'
+import { configs } from './configs'
 
 export enum ErrorType {
   NeedLogin
@@ -14,91 +15,104 @@ export class CustomError extends Error {
   }
 }
 
-export function init(config: IInitOptions) {
-  firebase.initializeApp(config)
+export enum FirementStoreConst {
+  Comments = 'comments',
+  Likes = 'Likes'
 }
 
-export async function getArticleComment(title: string): Promise<IBlog> {
-  const data = await firebase
-    .database()
-    .ref(`/${title}`)
-    .once('value')
-  const result = await data.val()
+/**
+ * Blog -1-n-> articles -1-n-> comments -1-n->likes
+ */
+class FirementStore {
+  db!: firebase.firestore.Firestore
 
-  console.log(result)
-  return result
-}
+  user: IUser | null
 
-export async function updateCommentInfo(title: string, uid: string, info: ObjectAny) {
-  const keys = Object.keys(info)
+  private _article: string
 
-  for await (const key of keys) {
-    firebase
-      .database()
-      .ref(`/${title}/${uid}/${key}`)
-      .set(info[key])
+  get currentArticle() {
+    return this.db.collection(configs.storeCollection).doc(this._article)
+  }
+
+  get currentComments() {
+    return this.currentArticle.collection(FirementStoreConst.Comments)
+  }
+
+  constructor() {
+    this._article = ''
+    this.user = null
+  }
+
+  init(config: IInitOptions) {
+    firebase.initializeApp(config)
+    this.db = firebase.firestore()
+    this._article = ''
+  }
+
+  changeArticle(title: string) {
+    this._article = title
+  }
+
+  async addComment(comment: IComment) {
+    const { likes, ...others } = comment
+
+    await this.currentComments.add(others)
+  }
+
+  async getAllComments() {
+    const data = await this.currentComments.get()
+
+    console.log(data.docs.map(d => d.data()))
+  }
+
+  async getComment(id: string) {
+    const data = await this.currentComments.where('id', '==', id).get()
+
+    return data.docs[0]
+  }
+
+  async likeComment(commentId: string) {
+    if (!this.user) {
+      throw new CustomError('Please login', ErrorType.NeedLogin)
+    }
+
+    const comment = await this.getComment(commentId)
+
+    if (!comment) {
+      return
+    }
+
+    const likedDoc = this.currentComments
+      .doc(comment.id)
+      .collection(FirementStoreConst.Likes)
+      .doc(this.user.uid)
+
+    const liked: { liked: boolean } = (await likedDoc.get()).data() as any
+
+    if (!liked.liked) {
+      // update liked
+    }
+
+    likedDoc.set({ liked: true })
+  }
+
+  async dislikeComment(commentId: string) {
+    if (!this.user) {
+      throw new CustomError('Please login', ErrorType.NeedLogin)
+    }
+
+    const comment = await this.getComment(commentId)
+
+    if (!comment) {
+      return
+    }
+
+    this.currentComments
+      .doc(comment.id)
+      .collection(FirementStoreConst.Likes)
+      .doc(this.user.uid)
+      .set({ liked: false })
   }
 }
 
-export function pushComment(title: string, user: IUser, content: string) {
-  const comment: IComment = {
-    ...user,
-    id: uuid(),
-    likes: {},
-    content,
-    timestamp: new Date().getTime().toString()
-  }
-
-  return firebase
-    .database()
-    .ref(`/${title}/${comment.id}/`)
-    .set(comment)
-}
-
-export async function addLike(title: string, id: string, uid: string) {
-  if (!uid) {
-    throw new CustomError('Please login', ErrorType.NeedLogin)
-  }
-
-  const data = await firebase
-    .database()
-    .ref(`/${title}/${id}`)
-    .once('value')
-
-  const comment: IComment = data.val()
-  comment.likes = comment.likes || {}
-
-  if (comment.likes[uid]) {
-    return
-  }
-
-  comment.likes[uid] = true
-
-  updateCommentInfo(title, id, {
-    likes: comment.likes
-  })
-}
-
-export async function removeLike(title: string, id: string, uid: string) {
-  if (!uid) {
-    throw new CustomError('Please login', ErrorType.NeedLogin)
-  }
-
-  const data = await firebase
-    .database()
-    .ref(`/${title}/${id}`)
-    .once('value')
-
-  const comment: IComment = data.val()
-  comment.likes = comment.likes || {}
-
-  if (comment.likes[uid]) {
-    return
-  }
-
-  comment.likes[uid] = false
-
-  return updateCommentInfo(title, id, {
-    likes: comment.likes
-  })
-}
+export const firementStore = new FirementStore()

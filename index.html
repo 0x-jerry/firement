@@ -4,33 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="./dist/style.css">
+    <link rel="stylesheet" href="./dist/style.css" />
     <title>Firement</title>
   </head>
   <body>
     <h1 style="text-align: center; margin-top: 50px;">Firement 评论系统 测试页面</h1>
     <div style="text-align:center;">
-      firement 是基于 firebase 创建的评论系统，目前正处于开发当中。 Github 地址: <a href="https://github.com/cwxyz007/firebase-comment-system">Github</a>
+      firement 是基于 firebase 创建的评论系统，目前正处于开发当中。 Github 地址:
+      <a href="https://github.com/cwxyz007/firebase-comment-system">Github</a>
     </div>
 
     <div id="firement" style="margin: auto; width:fit-content;"></div>
 
     <script src="https://unpkg.com/firebase@5.9.2/firebase-app.js"></script>
     <script src="https://unpkg.com/firebase@5.9.2/firebase-auth.js"></script>
-    <script src="https://unpkg.com/firebase@5.9.2/firebase-database.js"></script>
+    <script src="https://unpkg.com/firebase@5.9.2/firebase-firestore.js"></script>
 
     <script src="./dist/main.js"></script>
     <script>
-
       const config = {
         apiKey: 'AIzaSyBvtJJAzIKucsyjl7z_DDw43PL5rb0P4hc',
         authDomain: 'jie8440676360.firebaseapp.com',
-        databaseURL: `https://jie8440676360.firebaseio.com`,
-        messagingSenderId: '1067882600320',
         projectId: 'jie8440676360',
-        storageBucket: 'jie8440676360.appspot.com',
-        blogTitle: 'test',
-        defaultAvatar: './static/avatar.jpg'
+        defaultAvatar: './static/avatar.jpg',
+        storeCollection: 'Blog',
+        article: 'test'
       }
 
       Firement(config, document.getElementById('firement'))

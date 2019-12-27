@@ -1,10 +1,10 @@
 import { h, render, Component } from 'preact'
-import { init, getArticleComment, addLike } from './firement'
+import { firementStore } from './firement'
 import CommentForm from './components/CommentForm'
 import Comments, { ISortComment } from './components/Comments'
 import { LoginTypes, login } from './auth'
-import { configs } from './configs'
-import { IUser, IComment, IInitOptions } from './typedef'
+import { configs, IConfigs } from './configs'
+import { IUser, IComment, IInitOptions, IBlog } from './typedef'
 
 export interface IAppState {
   user: IUser
@@ -21,7 +21,6 @@ class App extends Component<{}, IAppState> {
       user: {
         uid: '',
         name: '匿名',
-        email: null,
         avatar: configs.defaultAvatar
       }
     }
@@ -44,7 +43,7 @@ class App extends Component<{}, IAppState> {
       if (type === LoginTypes.Anonymously) {
         user.avatar = configs.defaultAvatar
         user.name = '匿名'
-        user.email = null
+        user.email = void 0
       }
 
       this.setState({
@@ -58,7 +57,7 @@ class App extends Component<{}, IAppState> {
 
   handleLikes = async (comment: IComment) => {
     try {
-      await addLike(configs.blogTitle, comment.id, this.state.user.uid)
+      // await addLike(configs.blogTitle, comment.id, this.state.user.uid)
       await this.refreshComments()
     } catch (error) {
       alert('评论失败:' + error)
@@ -66,7 +65,9 @@ class App extends Component<{}, IAppState> {
   }
 
   async getComments() {
-    const data = await getArticleComment(configs.blogTitle)
+    const data: IBlog = {}
+
+    // await getArticleComment(configs.blogTitle)
 
     const list: ISortComment[] = []
 
@@ -104,11 +105,14 @@ class App extends Component<{}, IAppState> {
   }
 }
 
-export default function(config: IInitOptions, element: HTMLElement) {
-  init(config)
+export default function(opt: IInitOptions & IConfigs & { article: string }, element: HTMLElement) {
+  configs.storeCollection = opt.storeCollection
+  configs.defaultAvatar = opt.defaultAvatar
 
-  configs.blogTitle = config.blogTitle
-  configs.defaultAvatar = config.defaultAvatar
+  firementStore.init(opt)
+  firementStore.changeArticle(opt.article)
+
+  firementStore.getAllComments()
 
   render(<App />, element)
 }

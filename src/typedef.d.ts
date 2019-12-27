@@ -21,13 +21,10 @@ export interface IBlog {
   [title: string]: IComment
 }
 
-export interface IInitOptions extends IConfigs {
+export interface IInitOptions {
   apiKey: string
   authDomain: string
-  databaseURL: string
-  messagingSenderId: string
   projectId: string
-  storageBucket: string
 }
 
 export interface ObjectAny {

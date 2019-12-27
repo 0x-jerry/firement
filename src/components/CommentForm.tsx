@@ -1,6 +1,5 @@
 import { h, Component } from 'preact'
 import { LoginTypes, logout } from '../auth'
-import { pushComment } from '../firement'
 import { renderMD } from '../utils'
 import { configs } from '../configs'
 import { IUser } from '../typedef'
@@ -18,10 +17,7 @@ export interface ICommentFormState {
   commentContent: string
 }
 
-export default class CommentForm extends Component<
-  ICommentFormProps,
-  ICommentFormState
-> {
+export default class CommentForm extends Component<ICommentFormProps, ICommentFormState> {
   constructor(props: ICommentFormProps) {
     super(props)
     this.state = {
@@ -57,11 +53,11 @@ export default class CommentForm extends Component<
       return
     }
 
-    await pushComment(
-      configs.blogTitle,
-      this.props.user,
-      this.state.commentContent
-    )
+    // await pushComment(
+    //   configs.blogTitle,
+    //   this.props.user,
+    //   this.state.commentContent
+    // )
 
     this.props.refreshComments()
   }
@@ -76,8 +72,8 @@ export default class CommentForm extends Component<
       <form class="firement-form">
         <div class="firement-form__header">
           <div class="firement-row">
-            <img src={props.user.avatar} alt="avatar" class="firement-avatar" />
-            <span class="firement-form__label"> {props.user.name} </span>
+            <img src={props.user!.avatar} alt="avatar" class="firement-avatar" />
+            <span class="firement-form__label"> {props.user!.name} </span>
           </div>
         </div>
         <div class="firement-form__content">
@@ -126,12 +122,7 @@ export default class CommentForm extends Component<
         </div>
         <div className="firement-row">
           <div className="firement-row__right">
-            <input
-              type="button"
-              value={previewText}
-              class="firement-button"
-              onClick={this.handlePreview}
-            />
+            <input type="button" value={previewText} class="firement-button" onClick={this.handlePreview} />
             <input
               type="submit"
               value="提交评论"

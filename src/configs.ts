@@ -1,9 +1,9 @@
 export interface IConfigs {
   defaultAvatar: string
-  blogTitle: string
+  storeCollection: string
 }
 
 export const configs = {
   defaultAvatar: './static/avatar.jpg',
-  blogTitle: ''
+  storeCollection: 'Blog'
 }

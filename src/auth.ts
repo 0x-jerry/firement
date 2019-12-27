@@ -7,10 +7,8 @@ export enum LoginTypes {
   Anonymously = 'Anonymously'
 }
 
-async function login(
-  type: LoginTypes = LoginTypes.Anonymously
-): Promise<IUser> {
-  let provider: firebase.auth.AuthProvider = null
+async function login(type: LoginTypes = LoginTypes.Anonymously): Promise<IUser> {
+  let provider: firebase.auth.AuthProvider | null = null
 
   switch (type) {
     case LoginTypes.Google:
@@ -24,17 +22,15 @@ async function login(
       break
   }
 
-  const result = provider
-    ? await firebase.auth().signInWithPopup(provider)
-    : await firebase.auth().signInAnonymously()
+  const result = provider ? await firebase.auth().signInWithPopup(provider) : await firebase.auth().signInAnonymously()
 
-  const profile: any = result.additionalUserInfo.profile
+  const profile: any = result.additionalUserInfo!.profile
 
   return {
-    avatar: result.user.photoURL,
-    email: result.user.email,
-    name: result.user.displayName,
-    uid: result.user.uid,
+    avatar: result.user!.photoURL!,
+    email: result.user!.email!,
+    name: result.user!.displayName!,
+    uid: result.user!.uid,
     homePage: type === 'GitHub' ? profile.html_url : null
   }
 }
