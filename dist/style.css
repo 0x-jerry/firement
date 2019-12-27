@@ -1,0 +1,142 @@
+.firement-root {
+  width: 800px;
+}
+.firement-root * {
+  outline: none;
+  box-sizing: border-box;
+}
+.firement-button {
+  background: none;
+  border: none;
+  padding: 4px 10px;
+  transition: 0.2s ease;
+  transition-property: color;
+  margin: 0 2px;
+}
+.firement-button:hover {
+  color: #fc4242;
+}
+.firement-form {
+  box-sizing: border-box;
+  padding: 4px;
+  margin: 0;
+}
+.firement-form__label {
+  margin: 0 2px;
+}
+.firement-form__header {
+  margin-bottom: 4px;
+}
+.firement-form__content {
+  position: relative;
+  width: 100%;
+  height: 240px;
+}
+.firement-form__preview,
+.firement-form__textarea {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: none;
+  padding: 4px;
+  background: #ffffff;
+}
+.firement-form__textarea {
+  resize: none;
+  vertical-align: top;
+}
+.firement-form__preview {
+  position: relative;
+}
+.firement-form__preview_content {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+.firement-form__not_login,
+.firement-form__comment_input {
+  position: absolute;
+  border: 1px solid #fc4242;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #ffffff;
+}
+.firement-form__not_login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #eeeeee;
+}
+.firement-row {
+  display: flex;
+  margin: 5px 0;
+  align-items: center;
+}
+.firement-row__left {
+  flex: content;
+  display: flex;
+  align-items: center;
+}
+.firement-row__right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.firement-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+}
+.firement-comment {
+  border: 1px solid #fc4242;
+  padding: 10px;
+}
+.firement-comment__layer {
+  margin-left: 10px;
+  color: #fc4242;
+}
+.firement-comment__time {
+  color: #888888;
+}
+.firement-comment + .firement-comment {
+  margin-top: 20px;
+}
+.firement-comment__likes_icon {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 10px;
+  position: relative;
+  top: 0;
+  transform: rotate(-45deg);
+  background-color: red;
+  transition: transform 0.2s ease;
+}
+.firement-comment__likes_icon:before,
+.firement-comment__likes_icon:after {
+  content: '';
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  height: 10px;
+  width: 10px;
+}
+.firement-comment__likes_icon:before {
+  top: -5px;
+  left: 0;
+}
+.firement-comment__likes_icon:after {
+  left: 5px;
+  top: 0;
+}
+.firement-comment__likes_icon:hover {
+  transform: scale(1.1);
+}
+.firement-comment__likes_icon:active {
+  transform: scale(1);
+}

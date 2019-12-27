@@ -2,7 +2,8 @@ import { h, Component } from 'preact'
 import { LoginTypes, logout } from '../auth'
 import { pushComment } from '../firement'
 import { renderMD } from '../utils'
-import { configs } from '../index'
+import { configs } from '../configs'
+import { IUser } from '../typedef'
 
 export interface ICommentFormProps {
   user?: IUser
@@ -17,13 +18,16 @@ export interface ICommentFormState {
   commentContent: string
 }
 
-export default class CommentForm extends Component<ICommentFormProps, ICommentFormState> {
+export default class CommentForm extends Component<
+  ICommentFormProps,
+  ICommentFormState
+> {
   constructor(props: ICommentFormProps) {
     super(props)
     this.state = {
       isPreview: false,
       markdownContent: '',
-      commentContent: '',
+      commentContent: ''
     }
   }
 
@@ -32,13 +36,13 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
 
     this.setState({
       commentContent: el.value || '',
-      markdownContent: renderMD(el.value || ''),
+      markdownContent: renderMD(el.value || '')
     })
   }
 
   handlePreview = () => {
     this.setState({
-      isPreview: !this.state.isPreview,
+      isPreview: !this.state.isPreview
     })
   }
 
@@ -53,7 +57,11 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
       return
     }
 
-    await pushComment(configs.blogTitle, this.props.user, this.state.commentContent)
+    await pushComment(
+      configs.blogTitle,
+      this.props.user,
+      this.state.commentContent
+    )
 
     this.props.refreshComments()
   }
@@ -118,7 +126,12 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
         </div>
         <div className="firement-row">
           <div className="firement-row__right">
-            <input type="button" value={previewText} class="firement-button" onClick={this.handlePreview} />
+            <input
+              type="button"
+              value={previewText}
+              class="firement-button"
+              onClick={this.handlePreview}
+            />
             <input
               type="submit"
               value="提交评论"

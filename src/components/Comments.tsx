@@ -1,5 +1,6 @@
 import { h, Component } from 'preact'
 import Comment from './Comment'
+import { IComment } from '../typedef'
 
 export interface ISortComment {
   key: string
@@ -30,7 +31,7 @@ export default class Comments extends Component<ICommentsProps, {}> {
       likes: {},
       name: 'test',
       timestamp: new Date().getTime().toString(),
-      uid: '00001',
+      uid: '00001'
     }
 
     return (

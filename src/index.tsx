@@ -2,8 +2,9 @@ import { h, render, Component } from 'preact'
 import { init, getArticleComment, addLike } from './firement'
 import CommentForm from './components/CommentForm'
 import Comments, { ISortComment } from './components/Comments'
-import './style.less'
 import { LoginTypes, login } from './auth'
+import { configs } from './configs'
+import { IUser, IComment, IInitOptions } from './typedef'
 
 export interface IAppState {
   user: IUser
@@ -21,8 +22,8 @@ class App extends Component<{}, IAppState> {
         uid: '',
         name: '匿名',
         email: null,
-        avatar: configs.defaultAvatar,
-      },
+        avatar: configs.defaultAvatar
+      }
     }
   }
 
@@ -33,7 +34,7 @@ class App extends Component<{}, IAppState> {
   refreshComments = async () => {
     const comments = await this.getComments()
     this.setState({
-      comments,
+      comments
     })
   }
 
@@ -48,7 +49,7 @@ class App extends Component<{}, IAppState> {
 
       this.setState({
         user,
-        logged: true,
+        logged: true
       })
     } catch (error) {
       alert('登录失败: ' + error)
@@ -77,8 +78,8 @@ class App extends Component<{}, IAppState> {
           key,
           comment: {
             ...element,
-            likes: element.likes || {},
-          },
+            likes: element.likes || {}
+          }
         })
       }
     }
@@ -97,21 +98,20 @@ class App extends Component<{}, IAppState> {
           logged={s.logged}
           handleLogin={this.handleLogin}
         />
-        <Comments comments={this.state.comments} handleLikes={this.handleLikes} />
+        <Comments
+          comments={this.state.comments}
+          handleLikes={this.handleLikes}
+        />
       </div>
     )
   }
-}
-
-export const configs = {
-  defaultAvatar: './static/images/avatar.jpg',
-  blogTitle: '',
 }
 
 export default function(config: IInitOptions, element: HTMLElement) {
   init(config)
 
   configs.blogTitle = config.blogTitle
+  configs.defaultAvatar = config.defaultAvatar
 
   render(<App />, element)
 }

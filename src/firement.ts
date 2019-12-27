@@ -1,4 +1,5 @@
-import * as firebase from 'firebase'
+import firebase from 'firebase'
+import { IComment, IUser, IInitOptions, IBlog } from './typedef'
 
 function init(config: IInitOptions) {
   firebase.initializeApp(config)
@@ -35,7 +36,7 @@ function pushComment(title: string, user: IUser, content: string) {
     id: uid(),
     likes: {},
     content,
-    timestamp: new Date().getTime().toString(),
+    timestamp: new Date().getTime().toString()
   }
 
   return firebase
@@ -64,7 +65,7 @@ async function addLike(title: string, id: string, uid: string) {
   comment.likes[uid] = true
 
   return updateCommentInfo(title, id, {
-    likes: comment.likes,
+    likes: comment.likes
   })
 }
 

@@ -1,3 +1,5 @@
+import { IConfigs } from "./configs";
+
 interface IUser {
   uid: string
   name: string
@@ -19,12 +21,11 @@ interface IBlog {
   [title: string]: IComment
 }
 
-interface IInitOptions {
+interface IInitOptions extends IConfigs {
   apiKey: string
   authDomain: string
   databaseURL: string
   messagingSenderId: string
   projectId: string
   storageBucket: string
-  blogTitle: string
 }

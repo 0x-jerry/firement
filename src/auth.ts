@@ -1,12 +1,15 @@
-import * as firebase from 'firebase'
+import firebase from 'firebase'
+import { IUser } from './typedef'
 
 export enum LoginTypes {
   Google = 'Google',
   GitHub = 'GitHub',
-  Anonymously = 'Anonymously',
+  Anonymously = 'Anonymously'
 }
 
-async function login(type: LoginTypes = LoginTypes.Anonymously): Promise<IUser> {
+async function login(
+  type: LoginTypes = LoginTypes.Anonymously
+): Promise<IUser> {
   let provider: firebase.auth.AuthProvider = null
 
   switch (type) {
@@ -21,7 +24,9 @@ async function login(type: LoginTypes = LoginTypes.Anonymously): Promise<IUser> 
       break
   }
 
-  const result = provider ? await firebase.auth().signInWithPopup(provider) : await firebase.auth().signInAnonymously()
+  const result = provider
+    ? await firebase.auth().signInWithPopup(provider)
+    : await firebase.auth().signInAnonymously()
 
   const profile: any = result.additionalUserInfo.profile
 
@@ -30,7 +35,7 @@ async function login(type: LoginTypes = LoginTypes.Anonymously): Promise<IUser> 
     email: result.user.email,
     name: result.user.displayName,
     uid: result.user.uid,
-    homePage: type === 'GitHub' ? profile.html_url : null,
+    homePage: type === 'GitHub' ? profile.html_url : null
   }
 }
 
