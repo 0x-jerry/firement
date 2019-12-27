@@ -1,15 +1,21 @@
 {
   "compilerOptions": {
+    "rootDir": ".",
     "baseUrl": ".",
-    "outDir": "./dist/",
+    "outDir": "dist",
     "moduleResolution": "node",
-    "sourceMap": true,
+    "sourceMap": false,
     "noImplicitAny": false,
     "module": "esnext",
-    "target": "es6",
+    "target": "esnext",
     "allowJs": true,
     "jsx": "react",
-    "jsxFactory": "h"
+    "jsxFactory": "h",
+    "types": [
+      "node"
+    ]
   },
-  "include": ["./src/**/*", "./@types/**/*"]
+  "include": [
+    "src/**/*",
+  ]
 }
