@@ -4,34 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="./dist/style.css" />
     <title>Firement</title>
   </head>
   <body>
-    <h1 style="text-align: center; margin-top: 50px;">Firement 评论系统 测试页面</h1>
-    <div style="text-align:center;">
-      firement 是基于 firebase 创建的评论系统，目前正处于开发当中。 Github 地址:
-      <a href="https://github.com/cwxyz007/firebase-comment-system">Github</a>
-    </div>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
 
-    <div id="firement" style="margin: auto; width:fit-content;"></div>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
 
-    <script src="https://unpkg.com/firebase@5.9.2/firebase-app.js"></script>
-    <script src="https://unpkg.com/firebase@5.9.2/firebase-auth.js"></script>
-    <script src="https://unpkg.com/firebase@5.9.2/firebase-firestore.js"></script>
-
-    <script src="./dist/main.js"></script>
     <script>
-      const config = {
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
         apiKey: 'AIzaSyBvtJJAzIKucsyjl7z_DDw43PL5rb0P4hc',
         authDomain: 'jie8440676360.firebaseapp.com',
+        databaseURL: 'https://jie8440676360.firebaseio.com',
         projectId: 'jie8440676360',
-        defaultAvatar: './static/avatar.jpg',
-        storeCollection: 'Blog',
-        article: 'test'
+        storageBucket: 'jie8440676360.appspot.com',
+        messagingSenderId: '1067882600320',
+        appId: '1:1067882600320:web:b0b5a354a45fdb0ed21365',
       }
-
-      Firement(config, document.getElementById('firement'))
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig)
     </script>
   </body>
 </html>

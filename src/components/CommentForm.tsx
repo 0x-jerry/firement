@@ -1,7 +1,6 @@
 import { h, Component } from 'preact'
 import { LoginTypes, logout } from '../auth'
 import { renderMD } from '../utils'
-import { configs } from '../configs'
 import { IUser } from '../typedef'
 
 export interface ICommentFormProps {

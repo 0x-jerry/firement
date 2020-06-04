@@ -1,10 +1,9 @@
 import firebase from 'firebase'
-import { IComment, IUser, IInitOptions, IBlog, ObjectAny } from './typedef'
-import { uuid } from './utils'
+import { IComment, IUser, IInitOptions } from './typedef'
 import { configs } from './configs'
 
 export enum ErrorType {
-  NeedLogin
+  NeedLogin,
 }
 
 export class CustomError extends Error {
@@ -17,7 +16,7 @@ export class CustomError extends Error {
 
 export enum FirementStoreConst {
   Comments = 'comments',
-  Likes = 'Likes'
+  Likes = 'Likes',
 }
 
 /**
@@ -62,7 +61,7 @@ class FirementStore {
   async getAllComments() {
     const data = await this.currentComments.get()
 
-    console.log(data.docs.map(d => d.data()))
+    console.log(data.docs.map((d) => d.data()))
   }
 
   async getComment(id: string) {
@@ -82,10 +81,7 @@ class FirementStore {
       return
     }
 
-    const likedDoc = this.currentComments
-      .doc(comment.id)
-      .collection(FirementStoreConst.Likes)
-      .doc(this.user.uid)
+    const likedDoc = this.currentComments.doc(comment.id).collection(FirementStoreConst.Likes).doc(this.user.uid)
 
     const liked: { liked: boolean } = (await likedDoc.get()).data() as any
 
@@ -107,11 +103,7 @@ class FirementStore {
       return
     }
 
-    this.currentComments
-      .doc(comment.id)
-      .collection(FirementStoreConst.Likes)
-      .doc(this.user.uid)
-      .set({ liked: false })
+    this.currentComments.doc(comment.id).collection(FirementStoreConst.Likes).doc(this.user.uid).set({ liked: false })
   }
 }
 

@@ -2,7 +2,7 @@
 
 A comment system build on firebase
 
-## 食用指南
+## 开始
 
 1. 申请 Firebase 项目
 2. 申请 Github app 项目 (Github 登录)

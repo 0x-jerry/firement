@@ -1,24 +1,23 @@
-import { IConfigs } from './configs'
-
 export interface IUser {
-  uid: string
+  id: string
   name: string
   avatar: string
   email?: string
   homePage?: string
 }
 
-export interface IComment extends IUser {
+export interface IComment {
   id: string
+  user: IUser
   likes: {
-    [key: string]: boolean
+    [uid: string]: boolean
   }
   content: string
   timestamp: string
 }
 
 export interface IBlog {
-  [title: string]: IComment
+  [title: string]: IComment[]
 }
 
 export interface IInitOptions {

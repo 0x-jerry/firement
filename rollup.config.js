@@ -27,7 +27,7 @@ module.exports = {
       file: 'dist/main.js',
       name: 'Firement',
       format: 'umd',
-      globals: isProd ? { firebase: 'firebase' } : {},
+      globals: { firebase: 'firebase' },
       plugins: isProd ? [terser()] : [],
       sourcemap: isProd,
       sourcemapFile: 'build.map.js'
