@@ -1,9 +1,9 @@
-const terser = require('rollup-plugin-terser').terser
-const resolve = require('@rollup/plugin-node-resolve')
-const ts2 = require('rollup-plugin-typescript2')
-const commonjs = require('@rollup/plugin-commonjs')
-const serve = require('rollup-plugin-serve')
-const reload = require('rollup-plugin-livereload')
+import { terser } from 'rollup-plugin-terser'
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
+import ts2 from 'rollup-plugin-typescript2'
+import serve from 'rollup-plugin-serve'
+import reload from 'rollup-plugin-livereload'
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -13,8 +13,8 @@ const devPlugins = isProd
       serve(),
       reload({
         watch: 'dist',
-        verbose: false // Disable console output
-      })
+        verbose: false, // Disable console output
+      }),
     ]
 
 /**
@@ -30,15 +30,15 @@ module.exports = {
       globals: { firebase: 'firebase' },
       plugins: isProd ? [terser()] : [],
       sourcemap: isProd,
-      sourcemapFile: 'build.map.js'
-    }
+      sourcemapFile: 'build.map.js',
+    },
   ],
   external: ['firebase'],
   plugins: [
     commonjs(),
     resolve({
-      browser: true
+      browser: true,
     }),
-    ts2()
-  ].concat(devPlugins)
+    ts2(),
+  ].concat(devPlugins),
 }

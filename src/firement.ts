@@ -14,27 +14,20 @@ export class CustomError extends Error {
   }
 }
 
-export enum FirementStoreConst {
+export enum DBConst {
   Comments = 'comments',
   Likes = 'Likes',
 }
 
-/**
- * Blog -1-n-> articles -1-n-> comments -1-n->likes
- */
-class FirementStore {
+class BlogDB {
   db!: firebase.firestore.Firestore
 
   user: IUser | null
 
   private _article: string
 
-  get currentArticle() {
-    return this.db.collection(configs.storeCollection).doc(this._article)
-  }
-
-  get currentComments() {
-    return this.currentArticle.collection(FirementStoreConst.Comments)
+  get comments() {
+    return this.db.collection(this._article)
   }
 
   constructor() {
@@ -43,53 +36,42 @@ class FirementStore {
   }
 
   init(config: IInitOptions) {
-    firebase.initializeApp(config)
+    this._article = config.article
+    firebase.initializeApp(config.db)
     this.db = firebase.firestore()
-    this._article = ''
-  }
-
-  changeArticle(title: string) {
-    this._article = title
   }
 
   async addComment(comment: IComment) {
-    const { likes, ...others } = comment
-
-    await this.currentComments.add(others)
+    await this.comments.add(comment)
   }
 
   async getAllComments() {
-    const data = await this.currentComments.get()
+    const data = await this.comments.get()
 
-    console.log(data.docs.map((d) => d.data()))
+    console.log(
+      'get comments',
+      data.docs.map((d) => d.data())
+    )
   }
 
   async getComment(id: string) {
-    const data = await this.currentComments.where('id', '==', id).get()
+    const data = await this.comments.where('id', '==', id).get()
 
+    console.log('get comment', data.docs)
     return data.docs[0]
   }
 
-  async likeComment(commentId: string) {
+  async likeComment(id: string) {
     if (!this.user) {
       throw new CustomError('Please login', ErrorType.NeedLogin)
     }
 
-    const comment = await this.getComment(commentId)
+    const comment = await this.getComment(id)
 
+    console.log('like', comment.data())
     if (!comment) {
       return
     }
-
-    const likedDoc = this.currentComments.doc(comment.id).collection(FirementStoreConst.Likes).doc(this.user.uid)
-
-    const liked: { liked: boolean } = (await likedDoc.get()).data() as any
-
-    if (!liked.liked) {
-      // update liked
-    }
-
-    likedDoc.set({ liked: true })
   }
 
   async dislikeComment(commentId: string) {
@@ -99,12 +81,11 @@ class FirementStore {
 
     const comment = await this.getComment(commentId)
 
+    console.log('like', comment.data())
     if (!comment) {
       return
     }
-
-    this.currentComments.doc(comment.id).collection(FirementStoreConst.Likes).doc(this.user.uid).set({ liked: false })
   }
 }
 
-export const firementStore = new FirementStore()
+export const db = new BlogDB()

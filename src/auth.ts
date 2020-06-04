@@ -4,7 +4,7 @@ import { IUser } from './typedef'
 export enum LoginTypes {
   Google = 'Google',
   GitHub = 'GitHub',
-  Anonymously = 'Anonymously'
+  Anonymously = 'Anonymously',
 }
 
 async function login(type: LoginTypes = LoginTypes.Anonymously): Promise<IUser> {
@@ -30,8 +30,8 @@ async function login(type: LoginTypes = LoginTypes.Anonymously): Promise<IUser> 
     avatar: result.user!.photoURL!,
     email: result.user!.email!,
     name: result.user!.displayName!,
-    uid: result.user!.uid,
-    homePage: type === 'GitHub' ? profile.html_url : null
+    id: result.user!.uid,
+    homePage: type === 'GitHub' ? profile.html_url : null,
   }
 }
 

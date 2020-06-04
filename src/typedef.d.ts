@@ -20,10 +20,19 @@ export interface IBlog {
   [title: string]: IComment[]
 }
 
-export interface IInitOptions {
+export interface IDBConfig {
   apiKey: string
   authDomain: string
+  databaseURL: string
   projectId: string
+  storageBucket: string
+  messagingSenderId: string
+  appId: string
+}
+
+export interface IInitOptions {
+  db: IDBConfig
+  article: string
 }
 
 export interface ObjectAny {

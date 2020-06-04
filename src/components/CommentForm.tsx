@@ -1,7 +1,8 @@
 import { h, Component } from 'preact'
 import { LoginTypes, logout } from '../auth'
-import { renderMD } from '../utils'
+import { renderMD, uuid } from '../utils'
 import { IUser } from '../typedef'
+import { db } from '../firement'
 
 export interface ICommentFormProps {
   user?: IUser
@@ -22,7 +23,7 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
     this.state = {
       isPreview: false,
       markdownContent: '',
-      commentContent: ''
+      commentContent: '',
     }
   }
 
@@ -31,13 +32,13 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
 
     this.setState({
       commentContent: el.value || '',
-      markdownContent: renderMD(el.value || '')
+      markdownContent: renderMD(el.value || ''),
     })
   }
 
   handlePreview = () => {
     this.setState({
-      isPreview: !this.state.isPreview
+      isPreview: !this.state.isPreview,
     })
   }
 
@@ -52,11 +53,19 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
       return
     }
 
-    // await pushComment(
-    //   configs.blogTitle,
-    //   this.props.user,
-    //   this.state.commentContent
-    // )
+    await db.addComment({
+      id: uuid(),
+      user: {
+        id: '123',
+        name: 'test',
+        avatar: '123k',
+      },
+      content: '123',
+      timestamp: '1',
+      likes: {},
+    })
+
+    console.log('add comment')
 
     this.props.refreshComments()
   }

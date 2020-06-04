@@ -1,9 +1,5 @@
-export interface IConfigs {
-  defaultAvatar: string
-  storeCollection: string
-}
+import { avatar } from './avatar'
 
 export const configs = {
-  defaultAvatar: './static/avatar.jpg',
-  storeCollection: 'Blog'
+  defaultAvatar: avatar,
 }

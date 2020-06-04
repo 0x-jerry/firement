@@ -1,10 +1,11 @@
 import { h, render, Component } from 'preact'
-import { firementStore } from './firement'
+import { db } from './firement'
 import CommentForm from './components/CommentForm'
-import Comments, { ISortComment } from './components/Comments'
+import { ISortComment } from './components/Comments'
 import { LoginTypes, login } from './auth'
-import { configs, IConfigs } from './configs'
-import { IUser, IComment, IInitOptions, IBlog } from './typedef'
+import { configs } from './configs'
+import { IUser, IComment, IInitOptions } from './typedef'
+import { avatar } from './avatar'
 
 export interface IAppState {
   user: IUser
@@ -19,10 +20,10 @@ class App extends Component<{}, IAppState> {
       comments: [],
       logged: false,
       user: {
-        uid: '',
+        id: '',
         name: '匿名',
-        avatar: configs.defaultAvatar
-      }
+        avatar: configs.defaultAvatar,
+      },
     }
   }
 
@@ -33,7 +34,7 @@ class App extends Component<{}, IAppState> {
   refreshComments = async () => {
     const comments = await this.getComments()
     this.setState({
-      comments
+      comments,
     })
   }
 
@@ -48,7 +49,7 @@ class App extends Component<{}, IAppState> {
 
       this.setState({
         user,
-        logged: true
+        logged: true,
       })
     } catch (error) {
       alert('登录失败: ' + error)
@@ -65,25 +66,7 @@ class App extends Component<{}, IAppState> {
   }
 
   async getComments() {
-    const data: IBlog = {}
-
-    // await getArticleComment(configs.blogTitle)
-
     const list: ISortComment[] = []
-
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        const element = data[key]
-
-        list.push({
-          key,
-          comment: {
-            ...element,
-            likes: element.likes || {}
-          }
-        })
-      }
-    }
 
     list.sort((a, b) => (a.comment.timestamp < b.comment.timestamp ? 1 : -1))
 
@@ -99,20 +82,18 @@ class App extends Component<{}, IAppState> {
           logged={s.logged}
           handleLogin={this.handleLogin}
         />
-        <Comments comments={this.state.comments} handleLikes={this.handleLikes} />
+        {/* <Comments comments={this.state.comments} handleLikes={this.handleLikes} /> */}
       </div>
     )
   }
 }
 
-export default function(opt: IInitOptions & IConfigs & { article: string }, element: HTMLElement) {
-  configs.storeCollection = opt.storeCollection
-  configs.defaultAvatar = opt.defaultAvatar
+export default function (opt: IInitOptions, element: HTMLElement) {
+  configs.defaultAvatar = avatar
 
-  firementStore.init(opt)
-  firementStore.changeArticle(opt.article)
+  db.init(opt)
 
-  firementStore.getAllComments()
+  db.getAllComments()
 
   render(<App />, element)
 }

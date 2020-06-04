@@ -26,13 +26,15 @@ export default class Comments extends Component<ICommentsProps, {}> {
 
     const fakeMsg: IComment = {
       id: '1231',
-      avatar: configs.defaultAvatar,
+      user: {
+        id: '1231',
+        name: 'test',
+        avatar: configs.defaultAvatar,
+        email: '',
+      },
       content: '# test',
-      email: '',
       likes: {},
-      name: 'test',
       timestamp: new Date().getTime().toString(),
-      uid: '00001'
     }
 
     return (
