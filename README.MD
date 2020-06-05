@@ -2,6 +2,32 @@
 
 A comment system build on firebase
 
+## 使用方式
+
+```js
+import Firement from 'firement'
+
+const firebaseConfig = {
+  apiKey: 'xxx',
+  authDomain: 'xxx.firebaseapp.com',
+  databaseURL: 'https://xxx.firebaseio.com',
+  projectId: 'xxx',
+  storageBucket: 'xxx.appspot.com',
+  messagingSenderId: 'xxx',
+  appId: 'xxx',
+}
+
+// Initialize Firebase
+Firement(
+  {
+    db: firebaseConfig,
+    // 当前页面的标志，可以是标题，或者任何唯一的值
+    article: 'test',
+  },
+  document.getElementById('app')
+)
+```
+
 ## 开始
 
 1. 申请 Firebase 项目
