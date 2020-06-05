@@ -1,6 +1,6 @@
 import { h, Component } from 'preact'
 import { LoginTypes, logout } from '../auth'
-import { renderMD, uuid } from '../utils'
+import { renderMD } from '../utils'
 import { IUser } from '../typedef'
 import { db } from '../firement'
 
@@ -54,7 +54,6 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
     }
 
     await db.addComment({
-      id: uuid(),
       user: this.props.user!,
       content: this.state.commentContent,
       timestamp: new Date().getTime(),

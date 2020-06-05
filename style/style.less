@@ -1,7 +1,7 @@
-.firement {
-  @avatar-size: 26px;
-  @color-primary: #fc4242;
+@avatar-size: 26px;
+@color-primary: #fc4242;
 
+.firement {
   &-root {
     width: 800px;
 
@@ -26,20 +26,20 @@
 
   &-form {
     box-sizing: border-box;
-    padding: 4px;
     margin: 0;
-    // border: 1px solid @color-primary;
 
     &__label {
       margin: 0 2px;
     }
 
     &__header {
-      margin-bottom: 4px;
+      padding: 5px;
+      padding-bottom: 1px solid @color-primary;
     }
 
     &__content {
       position: relative;
+      padding: 4px;
       width: 100%;
       height: 240px;
     }
@@ -116,16 +116,20 @@
   }
 
   &-comment {
-    border: 1px solid @color-primary;
-    padding: 10px;
+    border-bottom: 1px solid #eee;
 
     &__layer {
       margin-left: 10px;
-      color: @color-primary;
+      color: #999;
     }
 
     &__time {
-      color: #888888;
+      color: #999;
+      font-size: small;
+    }
+
+    &__content {
+      padding: 5px;
     }
 
     & + & {

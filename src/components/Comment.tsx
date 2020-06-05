@@ -1,8 +1,7 @@
 import { h } from 'preact'
-import { renderMD } from '../utils'
+import { renderMD, dateStr } from '../utils'
 import { IComment, IUser } from '../typedef'
 import { avatar } from '../avatar'
-import { db } from '../firement'
 
 export interface ICommentProps {
   comment: IComment
@@ -15,7 +14,7 @@ export default function Comment(props: ICommentProps) {
   const { handleLikes, comment, user } = props
 
   const pageLink = comment.user.homePage
-  const timeDate = new Date(+props.comment.timestamp).toISOString()
+  const timeDate = dateStr(new Date(+props.comment.timestamp))
 
   const liked = user.id ? comment.likes[user.id] : false
 
@@ -33,17 +32,17 @@ export default function Comment(props: ICommentProps) {
             <img src={avatarImg} alt="avatar" className="firement-avatar" />
           </a>
           <span className="firement-form__label">{comment.user.name}</span>
-          <span className="firement-form__label firement-comment__time">comment at: {timeDate}</span>
+          <span className="firement-form__label firement-comment__time">{timeDate}</span>
         </div>
         <div className="firement-row__right">
           <span className="firement-comment__likes">
             <i className="firement-comment__likes_icon" onClick={handleLikeClick} />
             <span className="firement-form__label">{likeNum}</span>
-            <span className="firement-form__label firement-comment__layer"># {props.index}</span>
+            {/* <span className="firement-form__label firement-comment__layer"># {props.index}</span> */}
           </span>
         </div>
       </div>
-      <div className="firement-content" dangerouslySetInnerHTML={{ __html: renderMD(comment.content) }} />
+      <div className="firement-comment__content" dangerouslySetInnerHTML={{ __html: renderMD(comment.content) }} />
     </section>
   )
 }

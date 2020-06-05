@@ -9,6 +9,7 @@ import { avatar } from './avatar'
 export interface IAppState {
   user: IUser
   logged: boolean
+  hasMoreComment: boolean
   comments: IComment[]
 }
 
@@ -18,6 +19,7 @@ class App extends Component<{}, IAppState> {
     this.state = {
       comments: [],
       logged: false,
+      hasMoreComment: true,
       user: {
         id: '',
         name: '匿名',
@@ -31,7 +33,8 @@ class App extends Component<{}, IAppState> {
   }
 
   refreshComments = async () => {
-    const comments = await this.getComments()
+    db.resetLatestTag()
+    const comments = await db.getMoreComments()
     this.setState({
       comments,
     })
@@ -82,13 +85,16 @@ class App extends Component<{}, IAppState> {
     }
   }
 
-  async getComments() {
-    const list: IComment[] = (await db.getAllComments()) as any
-    return list
+  async getMoreComments() {
+    const comments = await db.getMoreComments()
+
+    this.setState({
+      comments: this.state.comments.concat(comments),
+    })
   }
 
   render(p: {}, s: IAppState) {
-    const { user, logged, comments } = s
+    const { user, logged, comments, hasMoreComment } = s
 
     return (
       <div class="firement-root">
@@ -99,6 +105,11 @@ class App extends Component<{}, IAppState> {
           handleLogin={this.handleLogin}
         />
         <Comments user={user} comments={comments} handleLikes={this.handleLikes} />
+        {hasMoreComment && (
+          <div className="firement-more">
+            <button onClick={this.getMoreComments}>加载更多</button>
+          </div>
+        )}
       </div>
     )
   }

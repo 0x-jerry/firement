@@ -13,15 +13,14 @@ export class CustomError extends Error {
   }
 }
 
-export enum DBConst {
-  Comments = 'comments',
-  Likes = 'Likes',
-}
+const pageSize = 10
 
 class BlogDB {
   db!: firebase.firestore.Firestore
 
   user: IUser | null
+
+  latestTag = 0
 
   private _article: string
 
@@ -40,6 +39,10 @@ class BlogDB {
     this.db = firebase.firestore()
   }
 
+  resetLatestTag() {
+    this.latestTag = 0
+  }
+
   async addComment(comment: IComment) {
     await this.comments.add(comment)
   }
@@ -50,7 +53,7 @@ class BlogDB {
     return data.docs.map((d) => ({
       ...d.data(),
       id: d.id,
-    }))
+    })) as IComment[]
   }
 
   async getComment(id: string) {
@@ -60,6 +63,21 @@ class BlogDB {
       ...data.data(),
       id: data.id,
     }
+  }
+
+  async getMoreComments() {
+    const sortComment = this.comments.orderBy('timestamp', 'desc').limit(pageSize)
+
+    const data = await (this.latestTag ? sortComment.startAt(this.latestTag) : sortComment).get()
+
+    const docs = data.docs.map((d) => ({
+      ...d.data(),
+      id: d.id,
+    })) as IComment[]
+
+    this.latestTag = docs[docs.length - 1].timestamp
+
+    return docs
   }
 
   async updateComment(id: string, comment: IComment) {

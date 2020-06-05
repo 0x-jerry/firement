@@ -18,17 +18,18 @@
 }
 .firement-form {
   box-sizing: border-box;
-  padding: 4px;
   margin: 0;
 }
 .firement-form__label {
   margin: 0 2px;
 }
 .firement-form__header {
-  margin-bottom: 4px;
+  padding: 5px;
+  padding-bottom: 1px solid #fc4242;
 }
 .firement-form__content {
   position: relative;
+  padding: 4px;
   width: 100%;
   height: 240px;
 }
@@ -93,15 +94,18 @@
   margin-right: 8px;
 }
 .firement-comment {
-  border: 1px solid #fc4242;
-  padding: 10px;
+  border-bottom: 1px solid #eee;
 }
 .firement-comment__layer {
   margin-left: 10px;
-  color: #fc4242;
+  color: #999;
 }
 .firement-comment__time {
-  color: #888888;
+  color: #999;
+  font-size: small;
+}
+.firement-comment__content {
+  padding: 5px;
 }
 .firement-comment + .firement-comment {
   margin-top: 20px;
