@@ -55,17 +55,11 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
 
     await db.addComment({
       id: uuid(),
-      user: {
-        id: '123',
-        name: 'test',
-        avatar: '123k',
-      },
-      content: '123',
-      timestamp: '1',
+      user: this.props.user!,
+      content: this.state.commentContent,
+      timestamp: new Date().getTime(),
       likes: {},
     })
-
-    console.log('add comment')
 
     this.props.refreshComments()
   }

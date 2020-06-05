@@ -7,13 +7,13 @@ export interface IUser {
 }
 
 export interface IComment {
-  id: string
+  id?: string
   user: IUser
   likes: {
     [uid: string]: boolean
   }
   content: string
-  timestamp: string
+  timestamp: number
 }
 
 export interface IBlog {

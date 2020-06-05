@@ -1,6 +1,5 @@
 import firebase from 'firebase'
 import { IComment, IUser, IInitOptions } from './typedef'
-import { configs } from './configs'
 
 export enum ErrorType {
   NeedLogin,
@@ -46,45 +45,33 @@ class BlogDB {
   }
 
   async getAllComments() {
-    const data = await this.comments.get()
+    const data = await this.comments.orderBy('timestamp', 'desc').get()
 
-    console.log(
-      'get comments',
-      data.docs.map((d) => d.data())
-    )
+    return data.docs.map((d) => ({
+      ...d.data(),
+      id: d.id,
+    }))
   }
 
   async getComment(id: string) {
-    const data = await this.comments.where('id', '==', id).get()
+    const data = await this.comments.doc(id).get()
 
-    console.log('get comment', data.docs)
-    return data.docs[0]
-  }
-
-  async likeComment(id: string) {
-    if (!this.user) {
-      throw new CustomError('Please login', ErrorType.NeedLogin)
-    }
-
-    const comment = await this.getComment(id)
-
-    console.log('like', comment.data())
-    if (!comment) {
-      return
+    return {
+      ...data.data(),
+      id: data.id,
     }
   }
 
-  async dislikeComment(commentId: string) {
-    if (!this.user) {
-      throw new CustomError('Please login', ErrorType.NeedLogin)
-    }
+  async updateComment(id: string, comment: IComment) {
+    await this.comments.doc(id).update(comment)
+  }
 
-    const comment = await this.getComment(commentId)
-
-    console.log('like', comment.data())
-    if (!comment) {
-      return
-    }
+  async updateCommentLike(id: string, like: boolean) {
+    await this.comments.doc(id).update({
+      likes: {
+        [this.user!.id]: like,
+      },
+    })
   }
 }
 
