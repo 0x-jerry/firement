@@ -117,7 +117,24 @@
   font-size: small;
 }
 .firement-comment__content {
-  padding: 5px;
+  position: relative;
+  padding: 0 5px 10px;
+}
+.firement-comment__content .firement-comment__content__more {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  border: 1px solid #eee;
+  padding: 3px 5px;
+  cursor: pointer;
+}
+.firement-comment__content.hide-more .firement-comment__content__inner {
+  overflow: hidden;
+  max-height: 200px;
+}
+.firement-comment__content.hide-more .firement-comment__content__more {
+  display: block;
 }
 .firement-comment + .firement-comment {
   margin-top: 20px;
@@ -163,6 +180,9 @@
   background: white;
   line-height: 50px;
   cursor: pointer;
+}
+.firement-more__btn.loading {
+  cursor: not-allowed;
 }
 .firement-more__none {
   text-align: center;

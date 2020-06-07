@@ -13,7 +13,8 @@ export interface ICommentProps {
 export default function Comment(props: ICommentProps) {
   const { handleLikes, comment, user } = props
 
-  const pageLink = comment.user.homePage
+  const pageLink = comment.user.homePage || 'javascript:'
+
   const timeDate = dateStr(new Date(+props.comment.timestamp))
 
   const liked = user.id ? comment.likes[user.id] : false
@@ -23,6 +24,21 @@ export default function Comment(props: ICommentProps) {
   const likeNum = Object.keys(comment.likes).filter((id) => comment.likes[id]).length
 
   const avatarImg = comment.user.avatar.match(/^[a-z]+\:\/\//) ? comment.user.avatar : avatar
+
+  let _el: HTMLDivElement | null = null
+
+  const handleOnload = (el: HTMLDivElement | null) => {
+    _el = el
+    setTimeout(() => {
+      if (el && el.clientHeight > 200) {
+        el.classList.add('hide-more')
+      }
+    }, 0)
+  }
+
+  const handleShowMore = () => {
+    _el!.classList.remove('hide-more')
+  }
 
   return (
     <section className="firement-comment firement-form" data-id={comment.id}>
@@ -42,7 +58,15 @@ export default function Comment(props: ICommentProps) {
           </span>
         </div>
       </div>
-      <div className="firement-comment__content" dangerouslySetInnerHTML={{ __html: renderMD(comment.content) }} />
+      <div className="firement-comment__content" ref={handleOnload}>
+        <div
+          className="firement-comment__content__inner"
+          dangerouslySetInnerHTML={{ __html: renderMD(comment.content) }}
+        ></div>
+        <div data-js="more-content" class="firement-comment__content__more" onClick={handleShowMore}>
+          显示更多
+        </div>
+      </div>
     </section>
   )
 }

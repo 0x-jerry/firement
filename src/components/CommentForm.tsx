@@ -5,10 +5,11 @@ import { IUser } from '../typedef'
 import { db } from '../firement'
 
 export interface ICommentFormProps {
-  user?: IUser
+  user: IUser
   logged: boolean
   refreshComments: Function
   handleLogin: Function
+  handleChangeUser: Function
 }
 
 export interface ICommentFormState {
@@ -54,7 +55,7 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
     }
 
     await db.addComment({
-      user: this.props.user!,
+      user: this.props.user,
       content: this.state.commentContent,
       timestamp: new Date().getTime(),
       likes: {},
@@ -71,20 +72,56 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
     this.props.handleLogin(type)
   }
 
+  handleChangeUser = async (e: Event, prop: 'name' | 'email') => {
+    this.props.user[prop] = (e.target as HTMLInputElement).value
+    this.props.handleChangeUser(this.props.user)
+  }
+
   render(props: ICommentFormProps, state: ICommentFormState) {
     const previewText = '预览: ' + (state.isPreview ? 'ON' : 'OFF')
     return (
       <form class="firement-form">
         <div class="firement-form__header firement-flex">
           <div class="firement-flex__left firement-flex">
-            <img src={props.user!.avatar} alt="avatar" class="firement-avatar" />
-            <span class="firement-form__label"> {props.user!.name} </span>
+            <img src={props.user.avatar} alt="avatar" class="firement-avatar" />
+            {props.logged && (
+              <input
+                type="text"
+                value={props.user.name}
+                placeholder="name"
+                style="margin-right: 5px;"
+                onInput={(e) => this.handleChangeUser(e, 'name')}
+              />
+            )}
+            {props.logged && (
+              <input
+                type="text"
+                value={props.user.email}
+                placeholder="email"
+                onInput={(e) => this.handleChangeUser(e, 'email')}
+              />
+            )}
           </div>
           <div className="firement-flex__right firement-flex">
             <div className="firement-tip">登录方式：</div>
-            <div className="firement-button firement-login">Google</div>
-            <div className="firement-button firement-login">Github</div>
-            <div className="firement-button firement-login">Anonymously</div>
+            <input
+              type="button"
+              class="firement-button"
+              value="Google"
+              onClick={this.handleLogin.bind(this, LoginTypes.Google)}
+            />
+            <input
+              type="button"
+              class="firement-button"
+              value="GitHub"
+              onClick={this.handleLogin.bind(this, LoginTypes.GitHub)}
+            />
+            <input
+              type="button"
+              class="firement-button"
+              value="Anonymously"
+              onClick={this.handleLogin.bind(this, LoginTypes.Anonymously)}
+            />
           </div>
         </div>
         <div class="firement-form__content">

@@ -148,7 +148,33 @@
     }
 
     &__content {
-      padding: 5px;
+      position: relative;
+      padding: 0 5px 10px;
+
+      .firement-comment__content__inner {
+        // padding: 5px;
+      }
+
+      .firement-comment__content__more {
+        display: none;
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        border: 1px solid #eee;
+        padding: 3px 5px;
+        cursor: pointer;
+      }
+
+      &.hide-more {
+        .firement-comment__content__inner {
+          overflow: hidden;
+          max-height: 200px;
+        }
+
+        .firement-comment__content__more {
+          display: block;
+        }
+      }
     }
 
     & + & {
@@ -208,6 +234,10 @@
       background: white;
       line-height: 50px;
       cursor: pointer;
+
+      &.loading {
+        cursor: not-allowed;
+      }
     }
 
     &__none {

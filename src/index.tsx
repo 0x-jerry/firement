@@ -102,6 +102,10 @@ class App extends Component<{}, IAppState> {
   }
 
   getMoreComments = async (clear = false) => {
+    if (this.state.loading) {
+      return
+    }
+
     this.setState({
       loading: true,
     })
@@ -119,6 +123,12 @@ class App extends Component<{}, IAppState> {
     })
   }
 
+  handleChangeUser = async (user: IUser) => {
+    this.setState({
+      user,
+    })
+  }
+
   render(p: {}, s: IAppState) {
     const { user, logged, comments, hasMoreComment, loading } = s
 
@@ -126,6 +136,7 @@ class App extends Component<{}, IAppState> {
       <div class="firement-root">
         <CommentForm
           refreshComments={this.refreshComments}
+          handleChangeUser={this.handleChangeUser}
           user={user}
           logged={logged}
           handleLogin={this.handleLogin}
@@ -133,7 +144,7 @@ class App extends Component<{}, IAppState> {
         <Comments user={user} comments={comments} handleLikes={this.handleLikes} />
         <div className="firement-more">
           {hasMoreComment ? (
-            <button class="firement-more__btn" onClick={() => this.getMoreComments()}>
+            <button class={'firement-more__btn' + (loading ? ' loading' : '')} onClick={() => this.getMoreComments()}>
               {loading ? '加载中...' : '加载更多'}
             </button>
           ) : (
