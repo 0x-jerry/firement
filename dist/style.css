@@ -5,7 +5,19 @@
   outline: none;
   box-sizing: border-box;
 }
+.firement-tip {
+  color: #999;
+}
+.firement-flex {
+  display: flex;
+  align-items: center;
+}
+.firement-flex__right {
+  flex: 1;
+  justify-content: flex-end;
+}
 .firement-button {
+  cursor: pointer;
   background: none;
   border: none;
   padding: 4px 10px;
@@ -111,6 +123,7 @@
   margin-top: 20px;
 }
 .firement-comment__likes_icon {
+  cursor: pointer;
   display: inline-block;
   width: 10px;
   height: 10px;
@@ -143,4 +156,18 @@
 }
 .firement-comment__likes_icon:active {
   transform: scale(1);
+}
+.firement-more__btn {
+  width: 100%;
+  border: 1px solid #eee;
+  background: white;
+  line-height: 50px;
+  cursor: pointer;
+}
+.firement-more__none {
+  text-align: center;
+  width: 100%;
+  color: #999;
+  background: white;
+  line-height: 50px;
 }

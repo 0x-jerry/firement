@@ -56,26 +56,26 @@ class BlogDB {
     })) as IComment[]
   }
 
-  async getComment(id: string) {
+  async getComment(id: string): Promise<IComment> {
     const data = await this.comments.doc(id).get()
 
     return {
       ...data.data(),
       id: data.id,
-    }
+    } as IComment
   }
 
   async getMoreComments() {
     const sortComment = this.comments.orderBy('timestamp', 'desc').limit(pageSize)
 
-    const data = await (this.latestTag ? sortComment.startAt(this.latestTag) : sortComment).get()
+    const data = await (this.latestTag ? sortComment.startAfter(this.latestTag) : sortComment).get()
 
     const docs = data.docs.map((d) => ({
       ...d.data(),
       id: d.id,
     })) as IComment[]
 
-    this.latestTag = docs[docs.length - 1].timestamp
+    this.latestTag = docs.length && docs[docs.length - 1].timestamp
 
     return docs
   }

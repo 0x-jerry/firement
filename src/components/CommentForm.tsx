@@ -60,7 +60,11 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
       likes: {},
     })
 
-    this.props.refreshComments()
+    await this.props.refreshComments()
+
+    this.setState({
+      commentContent: '',
+    })
   }
 
   handleLogin(type: LoginTypes) {
@@ -71,10 +75,16 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
     const previewText = '预览: ' + (state.isPreview ? 'ON' : 'OFF')
     return (
       <form class="firement-form">
-        <div class="firement-form__header">
-          <div class="firement-row">
+        <div class="firement-form__header firement-flex">
+          <div class="firement-flex__left firement-flex">
             <img src={props.user!.avatar} alt="avatar" class="firement-avatar" />
             <span class="firement-form__label"> {props.user!.name} </span>
+          </div>
+          <div className="firement-flex__right firement-flex">
+            <div className="firement-tip">登录方式：</div>
+            <div className="firement-button firement-login">Google</div>
+            <div className="firement-button firement-login">Github</div>
+            <div className="firement-button firement-login">Anonymously</div>
           </div>
         </div>
         <div class="firement-form__content">

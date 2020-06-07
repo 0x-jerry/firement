@@ -7,7 +7,15 @@ export enum LoginTypes {
   Anonymously = 'Anonymously',
 }
 
-async function login(type: LoginTypes = LoginTypes.Anonymously): Promise<IUser> {
+const cacheKey = 'blog.comment.login.user'
+
+async function login(type: LoginTypes = LoginTypes.Anonymously, useCache = false): Promise<IUser | null> {
+  if (useCache) {
+    const userStr = localStorage.getItem(cacheKey)
+
+    return userStr ? JSON.parse(userStr) : null
+  }
+
   let provider: firebase.auth.AuthProvider | null = null
 
   switch (type) {
@@ -26,13 +34,17 @@ async function login(type: LoginTypes = LoginTypes.Anonymously): Promise<IUser> 
 
   const profile: any = result.additionalUserInfo!.profile
 
-  return {
+  const user = {
     avatar: result.user!.photoURL!,
     email: result.user!.email!,
     name: result.user!.displayName!,
     id: result.user!.uid,
     homePage: type === 'GitHub' ? profile.html_url : null,
   }
+
+  localStorage.setItem(cacheKey, JSON.stringify(user))
+
+  return user
 }
 
 function logout() {

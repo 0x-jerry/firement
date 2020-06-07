@@ -11,7 +11,26 @@
     }
   }
 
+  &-tip {
+    color: #999;
+  }
+
+  &-flex {
+    display: flex;
+    align-items: center;
+
+    &__left {
+      //
+    }
+
+    &__right {
+      flex: 1;
+      justify-content: flex-end;
+    }
+  }
+
   &-button {
+    cursor: pointer;
     background: none;
     border: none;
     padding: 4px 10px;
@@ -135,8 +154,10 @@
     & + & {
       margin-top: 20px;
     }
+
     &__likes {
       &_icon {
+        cursor: pointer;
         @size: 10px;
 
         display: inline-block;
@@ -177,6 +198,24 @@
           transform: scale(1);
         }
       }
+    }
+  }
+
+  &-more {
+    &__btn {
+      width: 100%;
+      border: 1px solid #eee;
+      background: white;
+      line-height: 50px;
+      cursor: pointer;
+    }
+
+    &__none {
+      text-align: center;
+      width: 100%;
+      color: #999;
+      background: white;
+      line-height: 50px;
     }
   }
 }

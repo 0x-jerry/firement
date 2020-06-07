@@ -9,6 +9,7 @@ import { avatar } from './avatar'
 export interface IAppState {
   user: IUser
   logged: boolean
+  loading: boolean
   hasMoreComment: boolean
   comments: IComment[]
 }
@@ -19,6 +20,7 @@ class App extends Component<{}, IAppState> {
     this.state = {
       comments: [],
       logged: false,
+      loading: false,
       hasMoreComment: true,
       user: {
         id: '',
@@ -30,37 +32,49 @@ class App extends Component<{}, IAppState> {
 
   componentWillMount() {
     this.refreshComments()
+    this.getCacheLoginInfo()
   }
 
   refreshComments = async () => {
     db.resetLatestTag()
-    const comments = await db.getMoreComments()
+    return this.getMoreComments(true)
+  }
+
+  async getCacheLoginInfo() {
+    const user = await login(LoginTypes.Anonymously, true)
+    if (!user) {
+      return
+    }
+    this.solveLoginUser(user)
+  }
+
+  solveLoginUser(user: IUser) {
+    Object.keys(user).forEach((key) => {
+      // @ts-ignore
+      if (user[key] === undefined) {
+        // @ts-ignore
+        user[key] = null
+      }
+    })
+
+    user.avatar = user.avatar || avatar
+
+    db.user = user
     this.setState({
-      comments,
+      user,
+      logged: true,
     })
   }
 
   handleLogin = async (type: LoginTypes) => {
     try {
-      let user = await login(type)
+      const user = (await login(type))!
       if (type === LoginTypes.Anonymously) {
         user.avatar = avatar
         user.name = '匿名'
         user.email = void 0
       }
-      Object.keys(user).forEach((key) => {
-        // @ts-ignore
-        if (user[key] === undefined) {
-          // @ts-ignore
-          user[key] = null
-        }
-      })
-
-      db.user = user
-      this.setState({
-        user,
-        logged: true,
-      })
+      this.solveLoginUser(user)
     } catch (error) {
       alert('登录失败: ' + error)
     }
@@ -71,30 +85,42 @@ class App extends Component<{}, IAppState> {
       return
     }
 
+    const { comments } = this.state
+
     try {
       await db.updateCommentLike(comment.id!, liked)
       const data = await db.getComment(comment.id!)
-      const idx = this.state.comments.findIndex((c) => c.id === data.id)
+      const idx = comments.findIndex((c) => c.id === data.id)
+      comments.splice(idx, 1, data)
 
       this.setState({
-        [`comments[${idx}]`]: data,
+        comments,
       })
-      console.log(idx, data)
     } catch (error) {
       alert('评论失败:' + error)
     }
   }
 
-  async getMoreComments() {
+  getMoreComments = async (clear = false) => {
+    this.setState({
+      loading: true,
+    })
     const comments = await db.getMoreComments()
 
+    if (comments.length < 10) {
+      this.setState({
+        hasMoreComment: false,
+      })
+    }
+
     this.setState({
-      comments: this.state.comments.concat(comments),
+      loading: false,
+      comments: clear ? comments : this.state.comments.concat(comments),
     })
   }
 
   render(p: {}, s: IAppState) {
-    const { user, logged, comments, hasMoreComment } = s
+    const { user, logged, comments, hasMoreComment, loading } = s
 
     return (
       <div class="firement-root">
@@ -105,11 +131,15 @@ class App extends Component<{}, IAppState> {
           handleLogin={this.handleLogin}
         />
         <Comments user={user} comments={comments} handleLikes={this.handleLikes} />
-        {hasMoreComment && (
-          <div className="firement-more">
-            <button onClick={this.getMoreComments}>加载更多</button>
-          </div>
-        )}
+        <div className="firement-more">
+          {hasMoreComment ? (
+            <button class="firement-more__btn" onClick={() => this.getMoreComments()}>
+              {loading ? '加载中...' : '加载更多'}
+            </button>
+          ) : (
+            <div className="firement-more__none">到底了</div>
+          )}
+        </div>
       </div>
     )
   }
