@@ -1,4 +1,4 @@
-import { h, Component } from 'preact'
+import { Component } from 'preact'
 import { LoginTypes, logout } from '../auth'
 import { renderMD } from '../utils'
 import { IUser } from '../typedef'

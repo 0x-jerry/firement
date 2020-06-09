@@ -1,4 +1,4 @@
-import { h, Component } from 'preact'
+import { Component } from 'preact'
 import Comment from './Comment'
 import { IComment, IUser } from '../typedef'
 

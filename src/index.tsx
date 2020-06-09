@@ -1,4 +1,4 @@
-import { h, render, Component } from 'preact'
+import { render, Component } from 'preact'
 import { db } from './firement'
 import CommentForm from './components/CommentForm'
 import Comments from './components/Comments'

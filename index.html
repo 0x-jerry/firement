@@ -3,54 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link href="https://cdn.bootcdn.net/ajax/libs/normalize/8.0.1/normalize.css" rel="stylesheet" />
-    <link href="https://cdn.bootcdn.net/ajax/libs/github-markdown-css/4.0.0/github-markdown.css" rel="stylesheet" />
+    <title>Firement Demo</title>
     <style>
-      body {
-        font-family: 'Microsoft YaHei', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      }
       #app {
         margin: auto;
-        padding: 20px;
         width: fit-content;
       }
     </style>
-    <link rel="stylesheet" href="./dist/style.css" />
-    <title>Firement</title>
   </head>
   <body>
     <div id="app"></div>
-
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://cdn.bootcdn.net/ajax/libs/firebase/7.14.6/firebase-app.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/firebase/7.14.6/firebase-auth.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/firebase/7.14.6/firebase-firestore.js"></script>
-
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-
-    <script src="./dist/main.js"></script>
-    <script>
-      // Your web app's Firebase configuration
-      var firebaseConfig = {
-        apiKey: 'AIzaSyBvtJJAzIKucsyjl7z_DDw43PL5rb0P4hc',
-        authDomain: 'jie8440676360.firebaseapp.com',
-        databaseURL: 'https://jie8440676360.firebaseio.com',
-        projectId: 'jie8440676360',
-        storageBucket: 'jie8440676360.appspot.com',
-        messagingSenderId: '1067882600320',
-        appId: '1:1067882600320:web:b0b5a354a45fdb0ed21365',
-      }
-
-      // Initialize Firebase
-      Firement(
-        {
-          db: firebaseConfig,
-          article: 'test',
-        },
-        document.getElementById('app')
-      )
-    </script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

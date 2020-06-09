@@ -5,12 +5,17 @@
   "author": "cwxyz007 <jie844067636@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "scripts1": {
     "dev": "rollup -c -w --environment NODE_ENV:development",
     "build": "rollup -c --environment NODE_ENV:production",
     "build:less": "lessc style/style.less dist/style.css"
   },
   "devDependencies": {
     "@firebase/app-types": "^0.6.1",
+    "@prefresh/vite": "^0.8.3",
     "@rollup/plugin-commonjs": "^12.0.0",
     "@rollup/plugin-node-resolve": "^8.0.0",
     "@types/dompurify": "^2.0.2",
@@ -23,7 +28,8 @@
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-terser": "^6.1.0",
     "rollup-plugin-typescript2": "^0.27.1",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.3",
+    "vite": "^0.20.7"
   },
   "dependencies": {
     "dompurify": "^2.0.11",

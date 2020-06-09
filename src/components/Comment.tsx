@@ -1,4 +1,3 @@
-import { h } from 'preact'
 import { renderMD, dateStr } from '../utils'
 import { IComment, IUser } from '../typedef'
 import { avatar } from '../avatar'
