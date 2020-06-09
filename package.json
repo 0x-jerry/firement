@@ -6,12 +6,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
-  },
-  "scripts1": {
-    "dev": "rollup -c -w --environment NODE_ENV:development",
-    "build": "rollup -c --environment NODE_ENV:production",
-    "build:less": "lessc style/style.less dist/style.css"
+    "build:less": "lessc style/style.less dist/style.css",
+    "build:js": "rollup -c --environment NODE_ENV:production",
+    "build": "yarn build:less && yarn build:js",
+    "docs": "vite build ./public"
   },
   "devDependencies": {
     "@firebase/app-types": "^0.6.1",

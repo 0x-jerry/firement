@@ -24,9 +24,9 @@ module.exports = {
   input: 'src/index.tsx',
   output: [
     {
-      file: 'dist/main.js',
+      file: 'dist/firement.esm.js',
       name: 'Firement',
-      format: 'umd',
+      format: 'esm',
       globals: { firebase: 'firebase' },
       plugins: isProd ? [terser()] : [],
       sourcemap: isProd,

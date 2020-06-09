@@ -6,7 +6,8 @@ const preactRefresh = require('@prefresh/vite')
  */
 const config = {
   jsx: 'preact',
-  plugins: [preactRefresh()]
+  plugins: [preactRefresh()],
+  outDir: 'docs',
 }
 
 module.exports = config
