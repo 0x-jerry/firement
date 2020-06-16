@@ -1,6 +1,6 @@
 {
   "name": "firement",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/firement.esm.js",
   "types": "./index.d.ts",
   "author": "cwxyz007 <jie844067636@gmail.com>",
