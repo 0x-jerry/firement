@@ -1,6 +1,6 @@
 {
   "name": "firebase-comment-system",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "author": "cwxyz007 <jie844067636@gmail.com>",
   "license": "MIT",
@@ -9,7 +9,8 @@
     "build:less": "lessc style/style.less dist/style.css",
     "build:js": "rollup -c --environment NODE_ENV:production",
     "build": "yarn build:less && yarn build:js",
-    "docs": "vite build ./public"
+    "docs": "vite build ./public",
+    "prepublishOnly": "yarn build"
   },
   "devDependencies": {
     "@firebase/app-types": "^0.6.1",
