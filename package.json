@@ -1,5 +1,5 @@
 {
-  "name": "firebase-comment-system",
+  "name": "firement",
   "version": "0.0.2",
   "main": "dist/firement.esm.js",
   "types": "./index.d.ts",
