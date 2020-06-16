@@ -14,7 +14,7 @@ async function login(type: LoginTypes = LoginTypes.Anonymously, useCache = false
     const userStr = localStorage.getItem(cacheKey)
     const user: IUser | null = userStr ? JSON.parse(userStr) : null
 
-    return user?.name ? user : null
+    return user && user.name ? user : null
   }
 
   let provider: firebase.auth.AuthProvider | null = null
