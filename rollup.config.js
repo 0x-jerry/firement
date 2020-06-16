@@ -27,7 +27,6 @@ module.exports = {
       file: 'dist/firement.esm.js',
       name: 'Firement',
       format: 'esm',
-      globals: { firebase: 'firebase' },
       plugins: isProd ? [terser()] : [],
       sourcemap: isProd,
       sourcemapFile: 'build.map.js',
