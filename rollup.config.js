@@ -33,7 +33,6 @@ module.exports = {
       sourcemapFile: 'build.map.js',
     },
   ],
-  external: ['firebase'],
   plugins: [
     commonjs(),
     resolve({
