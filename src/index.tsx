@@ -1,3 +1,5 @@
+import 'firebase/auth'
+import 'firebase/firestore'
 import { render, Component } from 'preact'
 import { db } from './firement'
 import CommentForm from './components/CommentForm'
@@ -5,6 +7,7 @@ import Comments from './components/Comments'
 import { LoginTypes, login } from './auth'
 import { IUser, IComment, IInitOptions } from './typedef'
 import { avatar } from './avatar'
+import { h } from 'preact'
 
 export interface IAppState {
   user: IUser
@@ -13,6 +16,9 @@ export interface IAppState {
   hasMoreComment: boolean
   comments: IComment[]
 }
+
+// @ts-ignore
+window.h = h
 
 class App extends Component<{}, IAppState> {
   constructor() {

@@ -1,7 +1,7 @@
 {
   "name": "firement",
   "version": "0.0.3",
-  "main": "dist/firement.esm.js",
+  "main": "dist/firement.js",
   "types": "./index.d.ts",
   "author": "cwxyz007 <jie844067636@gmail.com>",
   "license": "MIT",
@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@firebase/app-types": "^0.6.1",
+    "@prefresh/nollup": "^0.6.2",
     "@prefresh/vite": "^0.8.3",
     "@rollup/plugin-commonjs": "^12.0.0",
     "@rollup/plugin-node-resolve": "^8.0.0",

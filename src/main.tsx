@@ -1,5 +1,3 @@
-import 'firebase/auth'
-import 'firebase/firestore'
 import '../style/style.less'
 import Firement from './index'
 
