@@ -11,8 +11,11 @@ export interface ICommentProps {
 
 export default function Comment(props: ICommentProps) {
   const { handleLikes, comment, user } = props
+  const { email, homePage } = comment.user
 
-  const pageLink = comment.user.homePage || 'javascript:'
+  const userEmail = email ? `mailto:${email}` : 'javascript:'
+  const userHomePage = homePage || 'javascript:'
+  const hasHomePage = !!homePage
 
   const timeDate = dateStr(new Date(+props.comment.timestamp))
 
@@ -43,10 +46,12 @@ export default function Comment(props: ICommentProps) {
     <section className="firement-comment firement-form" data-id={comment.id}>
       <div className="firement-form__header firement-row">
         <div className="firement-row__left">
-          <a href={pageLink}>
+          <a href={userEmail}>
             <img src={avatarImg} alt="avatar" className="firement-avatar" />
           </a>
-          <span className="firement-form__label">{comment.user.name}</span>
+          <a class="firement-a firement-form__label" target={hasHomePage ? '_blank' : ''} href={userHomePage}>
+            {comment.user.name}
+          </a>
           <span className="firement-form__label firement-comment__time">{timeDate}</span>
         </div>
         <div className="firement-row__right">

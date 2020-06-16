@@ -12,8 +12,9 @@ const cacheKey = 'blog.comment.login.user'
 async function login(type: LoginTypes = LoginTypes.Anonymously, useCache = false): Promise<IUser | null> {
   if (useCache) {
     const userStr = localStorage.getItem(cacheKey)
+    const user: IUser | null = userStr ? JSON.parse(userStr) : null
 
-    return userStr ? JSON.parse(userStr) : null
+    return user?.name ? user : null
   }
 
   let provider: firebase.auth.AuthProvider | null = null
