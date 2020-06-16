@@ -43,6 +43,15 @@
     }
   }
 
+  &-input {
+    border: 1px solid #999999;
+
+    &:focus,
+    &:focus-within {
+      border: 1px solid @color-primary;
+    }
+  }
+
   &-form {
     box-sizing: border-box;
     margin: 0;
@@ -91,7 +100,6 @@
     &__not_login,
     &__comment_input {
       position: absolute;
-      border: 1px solid @color-primary;
       top: 0;
       left: 0;
       height: 100%;

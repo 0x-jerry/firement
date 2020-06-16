@@ -31,9 +31,13 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
   previewMD = (e: Event) => {
     const el = e.target as HTMLInputElement
 
+    this.updateComment(el.value)
+  }
+
+  updateComment(content: string = '') {
     this.setState({
-      commentContent: el.value || '',
-      markdownContent: renderMD(el.value || ''),
+      commentContent: content,
+      markdownContent: renderMD(content),
     })
   }
 
@@ -63,8 +67,9 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
 
     await this.props.refreshComments()
 
+    this.updateComment()
     this.setState({
-      commentContent: '',
+      isPreview: false,
     })
   }
 
@@ -89,6 +94,7 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
                 type="text"
                 value={props.user.name}
                 placeholder="name"
+                class="firement-input"
                 style="margin-right: 5px;"
                 onInput={(e) => this.handleChangeUser(e, 'name')}
               />
@@ -97,6 +103,7 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
               <input
                 type="text"
                 value={props.user.email}
+                class="firement-input"
                 placeholder="email"
                 onInput={(e) => this.handleChangeUser(e, 'email')}
               />
@@ -126,7 +133,7 @@ export default class CommentForm extends Component<ICommentFormProps, ICommentFo
         </div>
         <div class="firement-form__content">
           {props.logged ? (
-            <div className="firement-box firement-form__comment_input">
+            <div className="firement-box firement-form__comment_input firement-input">
               {this.state.isPreview ? (
                 <div class="firement-box firement-form__preview">
                   <div
