@@ -1,7 +1,8 @@
 {
   "name": "firebase-comment-system",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "dist/firement.esm.js",
+  "types": "./index.d.ts",
   "author": "cwxyz007 <jie844067636@gmail.com>",
   "license": "MIT",
   "scripts": {
