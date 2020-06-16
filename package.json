@@ -1,6 +1,6 @@
 {
   "name": "firement",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "main": "dist/firement.js",
   "types": "./index.d.ts",
   "author": "cwxyz007 <jie844067636@gmail.com>",
