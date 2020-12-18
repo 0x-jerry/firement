@@ -1351,10 +1351,10 @@ dom-storage@2.1.0:
   resolved "https://registry.npm.taobao.org/dom-storage/download/dom-storage-2.1.0.tgz#00fb868bc9201357ea243c7bcfd3304c1e34ea39"
   integrity sha1-APuGi8kgE1fqJDx7z9MwTB406jk=
 
-dompurify@^2.0.11:
-  version "2.0.11"
-  resolved "https://registry.npm.taobao.org/dompurify/download/dompurify-2.0.11.tgz#cd47935774230c5e478b183a572e726300b3891d"
-  integrity sha1-zUeTV3QjDF5Hixg6Vy5yYwCziR0=
+dompurify@^2.0.17:
+  version "2.0.17"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.0.17.tgz#505ffa126a580603df4007e034bdc9b6b738668e"
+  integrity sha512-nNwwJfW55r8akD8MSFz6k75bzyT2y6JEa1O3JrZFBf+Y5R9JXXU4OsRl0B9hKoPgHTw2b7ER5yJ5Md97MMUJPg==
 
 dotenv@^8.2.0:
   version "8.2.0"
